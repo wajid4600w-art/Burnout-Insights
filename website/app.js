@@ -1,12 +1,12 @@
 /* Burnout Insight, plain service-oriented user interface (v6).
    Existing scientific data and scoring are in core.js and intentionally unchanged.
-   No network requests, data collection, or persistent storage. */
+   No network requests or server-side data collection. */
 (function () {
   'use strict';
   const C = window.BurnoutCore;
   if (!C) throw new Error('The assessment data could not be loaded.');
   const root = document.getElementById('app');
-  const state = { screen: 'home', index: 0, answers: {}, consent: false, from: 'home', error: '', quickIssue: '', language: 'en', resultStyle: 'both', mode: 'assessment', selectedRecords: [], recordView: null, showRecycle: false, progressDate: today() };
+  const state = { screen: 'home', index: 0, answers: {}, consent: false, from: 'home', error: '', quickIssue: '', resultStyle: 'both', mode: 'assessment', selectedRecords: [], recordView: null, showRecycle: false, progressDate: today() };
   const targetedPrompts = {
     coworkers:['I feel tense before interacting with a coworker.','A coworker’s communication makes it harder for me to work calmly.','I avoid raising concerns because I expect the conversation to go badly.','Workplace conflict stays on my mind after the interaction ends.','I feel that a coworker does not respect my boundaries.','I am unclear about who owns tasks when working with this coworker.','Small misunderstandings with this coworker grow into larger problems.','I do not feel safe asking this coworker for clarification.','I receive feedback from this coworker in a way that feels discouraging.','This coworker interrupts my ability to focus.','I worry that speaking up will damage the working relationship.','The conflict affects my confidence at work.','I have not had a calm opportunity to discuss the issue.','Our expectations about communication are different.','I feel responsible for managing the other person’s reactions.','The situation makes me withdraw from the team.','I replay difficult conversations after work.','The problem has continued without a clear agreement.','I lack support when collaboration breaks down.','I am unsure who can help resolve the issue fairly.','I find it difficult to separate the person from the work problem.','The conflict affects the quality of my work.','I feel pressure to accept behaviour that is not workable.','I need a clearer boundary or working agreement.','I would benefit from a supported conversation about this situation.'],
     workload:['My workload is too large for the time available.','I regularly face more deadlines than I can realistically meet.','New tasks arrive before earlier tasks are finished.','I work through breaks to keep up.','I find it difficult to decide what should come first.','My workload changes without enough planning time.','I often take work home or continue thinking about it after hours.','I feel pressure to say yes to every new request.','Tasks are distributed in a way that feels unbalanced.','I do not have enough staffing or resources for the work expected.','I worry that quality will suffer because there is too much to do.','Meetings leave too little time for focused work.','I am expected to be available across too many channels.','Urgent requests regularly interrupt important work.','I lack a realistic stopping point at the end of the day.','I have had little chance to recover between demanding tasks.','My priorities are unclear when work conflicts.','I feel behind even when I work hard.','Deadlines are set without enough information about the task.','I am judged on output without the necessary support.','The pace of work is difficult to sustain.','I postpone rest because the workload feels endless.','I need help deciding which work can wait.','I would benefit from a clearer priority agreement.','The current workload is affecting my energy outside work.'],
@@ -52,12 +52,59 @@
     records.unshift({...record,id:`${Date.now()}-${Math.random().toString(36).slice(2,8)}`});
     writeStored(recordsKey, records.slice(0, 12));
   }
+  function assessmentResponses(items) {
+    return items.map(item => {
+      const answer=C.validatedAnswer(state.answers,item.id);
+      return {question:item.text, answer:answer===null ? '' : C.optionsFor(item)[answer]};
+    });
+  }
   function recordCurrentAssessment() {
     const result=C.scoreAssessment(state.answers);
-    saveRecord({date:today(),mode:'Full assessment',personal:result.personal,work:result.work,areas:result.areas.map(area=>({name:area.name,score:area.score,short:area.short})),report:{prioritized:C.prioritizedAreas(result.areas).map(area=>area.name)}});
+    const prioritized=C.prioritizedAreas(result.areas);
+    saveRecord({
+      date:today(),
+      mode:'Full assessment',
+      personal:result.personal,
+      work:result.work,
+      areas:result.areas.map(area=>({name:area.name,score:area.score,short:area.short})),
+      responses:assessmentResponses(C.items),
+      report:{
+        type:'full',
+        summary:scoreMeaning(result.personal,result.work),
+        prioritized:prioritized.map(area=>({
+          name:area.name,
+          description:area.description,
+          employee:area.employee,
+          organization:area.organization
+        })),
+        bestStartingPoint:prioritized[0] ? {
+          name:prioritized[0].name,
+          employee:prioritized[0].employee
+        } : null,
+        workplaceNote:'These workplace scores are educational indicators created for this project, not results from the official Areas of Worklife Survey.',
+        nextStepsNote:'These suggestions are based on the workplace issues you reported, not on a medical diagnosis.'
+      }
+    });
   }
   function recordFocusedAssessment() {
-    saveRecord({date:today(),mode:`Focused: ${state.quickIssue}`,personal:null,work:null,areas:[{name:state.quickIssue,score:targetedScore(activeItems())}],report:{focused:true,issue:state.quickIssue}});
+    const guide=reliefGuides[state.quickIssue], questions=activeItems(), score=targetedScore(questions);
+    saveRecord({
+      date:today(),
+      mode:`Focused: ${state.quickIssue}`,
+      personal:null,
+      work:null,
+      areas:[{name:state.quickIssue,score}],
+      responses:assessmentResponses(questions),
+      report:{
+        type:'focused',
+        issue:state.quickIssue,
+        title:guide ? guide.title : state.quickIssue,
+        intro:guide ? guide.intro : 'Choose one small action that supports your energy or working conditions.',
+        steps:guide ? guide.steps : [],
+        answered:questions.filter(item=>C.validatedAnswer(state.answers,item.id)!==null).length,
+        total:questions.length
+      }
+    });
   }
   function recordForId(id) {
     return [...readRecords(), ...readRecycle()].find(record => record.id === id);
@@ -84,7 +131,14 @@
   function recordDetail(record) {
     if (!record) return '';
     const personal=Number(record.personal||0), work=Number(record.work||0);
-    return `<section class="record-detail"><div class="section-kicker">${tx('Saved report')}</div><h2>${escapeHtml(record.mode)}</h2><p class="small-text">${escapeHtml(record.date)} · ${tx('Your presented report is saved here for later review.')}</p>${personal||work?`<div class="meter-grid">${exhaustionMeter(tx('Personal exhaustion'),personal,tx('How exhausted you felt overall.'))}${exhaustionMeter(tx('Work-related exhaustion'),work,tx('How exhausted you felt in relation to your job.'))}</div>${impactGraph(personal,work)}`:`<section class="focused-score-card"><div><span class="focused-score-label">${tx('Reported concern level')}</span><strong>${Number(record.areas?.[0]?.score||0).toFixed(0)}<small>/100</small></strong></div><div class="meter focused-meter"><span class="meter-fill ${meterBand(Number(record.areas?.[0]?.score||0)).className}" style="width:${Number(record.areas?.[0]?.score||0)}%"></span><i class="meter-marker" style="left:${Number(record.areas?.[0]?.score||0)}%"></i></div></section>`}<h3>${tx('Workplace areas')}</h3><div class="area-card-grid">${(record.areas||[]).map(area=>`<article class="area-card"><div class="area-card-head"><h3>${escapeHtml(area.name)}</h3><strong>${Number(area.score||0).toFixed(0)}<small>/100</small></strong></div><div class="area-bar"><i style="width:${Number(area.score||0)}%"></i></div>${area.short?`<p>${escapeHtml(area.short)}</p>`:''}</article>`).join('')}</div><button class="button secondary no-print" type="button" data-action="close-record">${tx('Back to records')}</button></section>`;
+    const report=record.report||{};
+    const focused=report.type==='focused' || report.focused;
+    const prioritized=Array.isArray(report.prioritized) ? report.prioritized.map(area=>typeof area==='string'?{name:area}:area) : [];
+    const responses=(record.responses||[]).length ? `<section class="result-section"><h2>Responses captured</h2><div class="saved-answer-list">${record.responses.map((response,index)=>`<article><strong>${index+1}. ${escapeHtml(response.question)}</strong><span>${escapeHtml(response.answer||'No answer')}</span></article>`).join('')}</div></section>` : '';
+    const fullReport=focused
+      ? `<section class="result-section"><h2>What you can try now</h2><div class="advice-item"><h3>${escapeHtml(report.title||record.mode)}</h3><p>${escapeHtml(report.intro||'Choose one small action that supports your energy or working conditions.')}</p><ol>${(report.steps||[]).map(step=>`<li>${escapeHtml(step)}</li>`).join('')}</ol></div><p class="small-text">Completed ${Number(report.answered||0)} of ${Number(report.total||0)} focused questions. This category score is an educational indicator, not a diagnosis.</p></section>`
+      : `<section class="result-section"><h2>What this pattern means</h2><p>${report.summary||scoreMeaning(personal,work)}</p></section><section class="result-section"><h2>What your answers might mean</h2><p>The areas you reported the most concern about include <strong>${prioritized.map(area=>escapeHtml(area.name)).join(', ')||'no particular workplace area'}</strong>.</p>${prioritized.map(area=>`<article class="advice-item"><h3>${escapeHtml(area.name)}</h3><p>${escapeHtml(area.description||'')}</p><p><strong>What you can do:</strong> ${escapeHtml(area.employee||'')}</p><p><strong>What an employer can do:</strong> ${escapeHtml(area.organization||'')}</p></article>`).join('')}</section><section class="result-section"><h2>Possible next steps</h2><p>${escapeHtml(report.nextStepsNote||'These suggestions are based on the workplace issues you reported, not on a medical diagnosis.')}</p>${report.bestStartingPoint?`<div class="solution-card"><span class="solution-icon">→</span><div><strong>Your best starting point: ${escapeHtml(report.bestStartingPoint.name)}</strong><p>${escapeHtml(report.bestStartingPoint.employee)}</p></div></div>`:'<p>Choose one small recovery action today, then speak with someone you trust if the concern continues.</p>'}</section>`;
+    return `<section class="record-detail"><div class="section-kicker">${tx('Saved report')}</div><h2>${escapeHtml(record.mode)}</h2><p class="small-text">${escapeHtml(record.date)} · ${tx('Your presented report is saved here for later review.')}</p>${personal||work?`<div class="meter-grid">${exhaustionMeter(tx('Personal exhaustion'),personal,tx('How exhausted you felt overall.'))}${exhaustionMeter(tx('Work-related exhaustion'),work,tx('How exhausted you felt in relation to your job.'))}</div>${impactGraph(personal,work)}`:`<section class="focused-score-card"><div><span class="focused-score-label">${tx('Reported concern level')}</span><strong>${Number(record.areas?.[0]?.score||0).toFixed(0)}<small>/100</small></strong></div><div class="meter focused-meter"><span class="meter-fill ${meterBand(Number(record.areas?.[0]?.score||0)).className}" style="width:${Number(record.areas?.[0]?.score||0)}%"></span><i class="meter-marker" style="left:${Number(record.areas?.[0]?.score||0)}%"></i></div></section>`}${fullReport}<h3>${tx('Workplace areas')}</h3><div class="area-card-grid">${(record.areas||[]).map(area=>`<article class="area-card"><div class="area-card-head"><h3>${escapeHtml(area.name)}</h3><strong>${Number(area.score||0).toFixed(0)}<small>/100</small></strong></div><div class="area-bar"><i style="width:${Number(area.score||0)}%"></i></div>${area.short?`<p>${escapeHtml(area.short)}</p>`:''}</article>`).join('')}</div>${responses}<button class="button secondary no-print" type="button" data-action="close-record">${tx('Back to records')}</button></section>`;
   }
   function recordsPage() {
     const records=state.showRecycle?readRecycle():readRecords(), allSelected=state.selectedRecords.length===0;
@@ -92,7 +146,7 @@
       return `<main id="main" class="container content records-content" tabindex="-1" dir="${dir()}"><button class="button secondary no-print" type="button" data-action="close-record">← ${tx('Back to records')}</button>${recordDetail(recordForId(state.recordView))}</main>`;
     }
     const activeCount=readRecords().length, recycleCount=readRecycle().length;
-    return `<main id="main" class="container content records-content" tabindex="-1"><div class="section-kicker">Private history</div><h1>Your records</h1><p class="intro-text">Completed assessments keep the result, workplace areas, and every answer so you can review a specific day later.</p><div class="records-tabs no-print"><button class="button ${state.showRecycle?'secondary':'primary'}" data-action="active-records">Active records (${activeCount})</button><button class="button ${state.showRecycle?'primary':'secondary'}" data-action="recycle-records">Recycle bin (${recycleCount})</button></div>${state.showRecycle?'<p class="small-text">Deleted records stay here until you permanently remove or restore them.</p>':''}${records.length?`<div class="records-toolbar no-print"><span>Select records for one combined download</span>${!state.showRecycle?'<button class="button secondary" type="button" data-action="download-records">Download selected</button>':''}${state.showRecycle?'<button class="button danger" type="button" data-action="empty-recycle">Empty recycle bin</button>':''}</div>${records.map((record,index)=>{const id=record.id||`${record.date}-${index}`,selected=allSelected||state.selectedRecords.includes(id);return `<article class="record-card ${selected?'record-selected':'record-unselected'}"><label class="record-select no-print"><input type="checkbox" data-record-id="${escapeHtml(id)}" ${selected?'checked':''}><span></span></label><button class="record-open" type="button" data-action="view-record" data-record="${escapeHtml(id)}"><strong>${escapeHtml(record.mode)}</strong><small>${escapeHtml(record.date)} · ${Object.keys(record.answers||{}).length} answers saved</small><span class="record-values"><span>Personal <b>${record.personal?.toFixed?.(0) ?? '—'}</b></span><span>Work <b>${record.work?.toFixed?.(0) ?? '—'}</b></span></button><div class="record-actions no-print">${state.showRecycle?`<button class="button secondary" data-action="restore-record" data-record="${escapeHtml(id)}">Restore</button>`:`<button class="button danger" data-action="delete-record" data-record="${escapeHtml(id)}">Delete</button>`}</div></article>`;}).join('')}`:'<div class="notice"><strong>No records here</strong><p>Complete an assessment and your result will appear here.</p></div>'}${link('home','← Return home','back-link')}</main>`;
+    return `<main id="main" class="container content records-content" tabindex="-1"><div class="section-kicker">Private history</div><h1>Your records</h1><p class="intro-text">Completed assessments keep the full report, workplace areas, and every response so you can review a specific day later.</p><div class="records-tabs no-print"><button class="button ${state.showRecycle?'secondary':'primary'}" data-action="active-records">Active records (${activeCount})</button><button class="button ${state.showRecycle?'primary':'secondary'}" data-action="recycle-records">Recycle bin (${recycleCount})</button></div>${state.showRecycle?'<p class="small-text">Deleted records stay here until you permanently remove or restore them.</p>':''}${records.length?`<div class="records-toolbar no-print"><span>Select records for one combined download</span>${!state.showRecycle?'<button class="button secondary" type="button" data-action="download-records">Download selected</button>':''}${state.showRecycle?'<button class="button danger" type="button" data-action="empty-recycle">Empty recycle bin</button>':''}</div>${records.map((record,index)=>{const id=record.id||`${record.date}-${index}`,selected=allSelected||state.selectedRecords.includes(id);return `<article class="record-card ${selected?'record-selected':'record-unselected'}"><label class="record-select no-print"><input type="checkbox" data-record-id="${escapeHtml(id)}" ${selected?'checked':''}><span></span></label><button class="record-open" type="button" data-action="view-record" data-record="${escapeHtml(id)}"><strong>${escapeHtml(record.mode)}</strong><small>${escapeHtml(record.date)} · ${(record.responses||record.answers||[]).length} responses saved</small><span class="record-values"><span>Personal <b>${record.personal?.toFixed?.(0) ?? '—'}</b></span><span>Work <b>${record.work?.toFixed?.(0) ?? '—'}</b></span></button><div class="record-actions no-print">${state.showRecycle?`<button class="button secondary" data-action="restore-record" data-record="${escapeHtml(id)}">Restore</button>`:`<button class="button danger" data-action="delete-record" data-record="${escapeHtml(id)}">Delete</button>`}</div></article>`;}).join('')}`:'<div class="notice"><strong>No records here</strong><p>Complete an assessment and your result will appear here.</p></div>'}${link('home','← Return home','back-link')}</main>`;
   }
   function makePlan(result) {
     const areas = C.prioritizedAreas(result.areas);
@@ -265,7 +319,7 @@
     const meters=partialMeter();
     return `<main id="main" class="container content question-content" tabindex="-1" dir="${dir()}">
       ${link('back', `← ${tx('Back')}`, 'back-link')}
-      <div class="survey-overview"><div>      <p class="step">${tx('Question')} ${state.index+1} ${of} ${questions.length}</p><div class="progress" aria-label="Assessment progress"><span style="width:${pct}%"></span></div></div><div class="live-meters">${meters.map(liveMeterCard).join('')}</div></div>
+      <div class="survey-overview"><div>      <p class="step">${tx('Question')} ${state.index+1} of ${questions.length}</p><div class="progress" aria-label="Assessment progress"><span style="width:${pct}%"></span></div></div><div class="live-meters">${meters.map(liveMeterCard).join('')}</div></div>
       <div class="question-layout question-enter"><form id="question-form" novalidate><p class="section-label">${escapeHtml(groupName(item))}</p><fieldset class="question-field" id="question-field" tabindex="-1" aria-describedby="answer-error">
         <legend><span class="question-eyebrow">A moment to check in</span><h1 id="question-title">${escapeHtml(displayQuestion(item))}</h1></legend>
         <p class="hint">${tx('Select one answer.')}</p>
