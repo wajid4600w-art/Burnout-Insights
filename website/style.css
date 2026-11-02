@@ -117,8 +117,11 @@ p { margin-bottom:17px; max-width:690px; }
 .meter-card-head p { color:var(--secondary); font-size:.88rem; margin:0; }
 .meter-card-head > strong { color:var(--blue-dark); font-size:1.55rem; white-space:nowrap; line-height:1.2; }
 .meter-card-head > strong span { color:var(--secondary); font-size:.8rem; font-weight:400; }
-.meter { position:relative; height:15px; margin:25px 0 5px; border-radius:99px; overflow:visible; background:#e6edf2; }
-.meter-fill { display:block; height:100%; border-radius:99px; background:linear-gradient(90deg,#4c9fca,#2878b5); transition:width .4s ease; }
+.meter { position:relative; height:15px; margin:25px 0 5px; border-radius:99px; overflow:visible; background:linear-gradient(90deg,#6fc49e 0 34%,#efc45f 34% 67%,#d96862 67%); }
+.meter-fill { display:block; height:100%; border-radius:99px; transition:width .4s ease; }
+.meter-fill.low { background:#4da77c; }
+.meter-fill.elevated { background:#d89d35; }
+.meter-fill.high { background:#cf5b55; }
 .meter-marker { position:absolute; top:-5px; width:4px; height:25px; border-radius:4px; background:var(--ink); transform:translateX(-2px); }
 .meter-scale { display:flex; justify-content:space-between; color:var(--secondary); font-size:.7rem; }
 .meter-status { margin:16px 0 0; padding:10px 12px; border-radius:8px; font-size:.84rem; }
