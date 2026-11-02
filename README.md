@@ -1,49 +1,42 @@
 # Burnout Insight
 
-Burnout Insight is a standalone browser-based educational tool for reflecting on personal exhaustion, work-related exhaustion, and workplace conditions.
+Burnout Insight is a simple website that helps people think about stress, tiredness, and work conditions.
 
-## Repository contents
+## Open the website
 
-```text
-website/
-├── index.html   # Ready-to-open standalone website
-├── app.js       # Interface, assessment flow, records, progress, and interactions
-├── core.js      # Questions and scoring logic
-├── style.css    # Website styling and responsive layout
-└── build.py     # Rebuilds index.html from the source files
-```
+1. Open the `website` folder.
+2. Double-click `index.html`.
+3. The website will open in your browser.
 
-## How to use
+You do not need to install anything.
 
-### Open the website
+## Use the website
 
-Open `website/index.html` directly in a modern browser.
+1. Choose **Find my pattern** to complete the full assessment.
+2. Choose **Get immediate help** to focus on one concern.
+3. Answer each question.
+4. Read your score, explanation, and suggested next steps.
+5. Use **Records** to view, delete, restore, or download saved results.
+6. Use **My progress** to follow a private seven-day plan.
 
-No server, account, database, or package installation is required.
+## Files
 
-### Use the assessment
+- `index.html` — the ready-to-use website
+- `app.js` — website actions and pages
+- `core.js` — questions and scoring
+- `style.css` — website design
+- `build.py` — rebuilds `index.html` after source changes
 
-1. Choose **Find my pattern** for the complete assessment, or choose **Get immediate help** for focused questions about a specific concern.
-2. Read each question and select the answer that best describes your experience.
-3. Continue through the questions to view the result.
-4. Review the horizontal score meters, workplace areas, explanations, and suggested next steps.
-5. Use **Records** to review saved results, open a specific record, delete or restore records, or download selected records together.
-6. Use **My progress** to create and update a private seven-day improvement plan.
+## Rebuild the website
 
-### Rebuild the standalone page
-
-When `app.js`, `core.js`, or `style.css` changes, run:
+If you change `app.js`, `core.js`, or `style.css`, run:
 
 ```bash
 python website/build.py
 ```
 
-This embeds the source files into `website/index.html`, which is the browser-ready version.
+## Privacy
 
-## Privacy and storage
+Your records stay in your browser. The website does not need an account or send answers to a server.
 
-Assessment records and progress are stored locally in the browser using `localStorage`. The website does not send answers to a server or require a user account.
-
-## Important
-
-This is an educational self-reflection tool, not a medical diagnosis. It does not determine whether someone has burnout or another health condition. Seek qualified professional support for persistent, severe, or concerning symptoms.
+This is an educational tool, not a medical diagnosis.
