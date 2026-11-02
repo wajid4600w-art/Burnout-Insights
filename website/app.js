@@ -264,7 +264,6 @@
   }
   function home() {
     const savedRecords=readRecords();
-    const latest=savedRecords[0];
     const averageSaved = key => {
       const values=savedRecords.map(record => Number(record[key])).filter(Number.isFinite);
       return values.length ? Math.round(values.reduce((sum,value)=>sum+value,0)/values.length) : 0;
@@ -274,7 +273,7 @@
     const workAnswered=C.cbiItems.filter(item=>item.section==='work'&&C.validatedAnswer(state.answers,item.id)!==null);
     const livePersonal=personalAnswered.length?personalAnswered.reduce((sum,item)=>sum+C.cbiItemScore(item,state.answers[item.id]),0)/personalAnswered.length:null;
     const liveWork=workAnswered.length?workAnswered.reduce((sum,item)=>sum+C.cbiItemScore(item,state.answers[item.id]),0)/workAnswered.length:null;
-    const dashboardValues=savedRecords.length && !personalAnswered.length ? [
+    const dashboardValues=savedRecords.length ? [
       ['Personal exhaustion',averageSaved('personal')],
       ['Work exhaustion',averageSaved('work')],
       ['Workplace concern',averageAreas.length ? Math.round(averageAreas.reduce((sum,area)=>sum+Number(area.score||0),0)/averageAreas.length) : 0]
@@ -463,11 +462,19 @@
     window.scrollTo(0,0);
     render({focusHeading:true});
   }
+  function resetAssessment(mode='assessment', issue='') {
+    state.answers={};
+    state.consent=false;
+    state.index=0;
+    state.error='';
+    state.mode=mode;
+    state.quickIssue=issue;
+  }
   function action(name, value, source) {
     const recordId=value || source?.getAttribute('data-record') || '';
     switch(name) {
-      case 'start': go('intro'); break;
-      case 'targeted-start': state.mode='targeted'; state.index=0; go('question'); break;
+      case 'start': resetAssessment(); go('intro'); break;
+      case 'targeted-start': resetAssessment('targeted', state.quickIssue); go('question'); break;
       case 'howto': state.from=state.screen; go('howto'); break;
       case 'relief':
         state.quickIssue=value||''; state.mode='targeted'; render({focusHeading:false});
@@ -497,14 +504,14 @@
       case 'home': state.quickIssue=''; state.mode='assessment'; go('home'); break;
       case 'begin':
         if(!state.consent) {state.error='Please confirm that you understand the information above.';render();document.getElementById('consent')?.focus();return;}
-        state.mode='assessment'; state.index=0;go('question');break;
+        resetAssessment(); state.consent=true; go('question');break;
       case 'back': state.index>0?state.index--:state.screen='intro';go(state.screen);break;
       case 'resume': state.index=Math.max(0,C.items.findIndex(q=>C.validatedAnswer(state.answers,q.id)===null));go('question');break;
       case 'about': state.from=state.screen;go('about');break;
       case 'return': go(state.from==='about'?'home':state.from);break;
       case 'restart':
         if(Object.keys(state.answers).length && !window.confirm('Start again? Your current answers will be cleared.'))return;
-        state.answers={}; state.consent=false; state.index=0; state.mode='assessment'; state.quickIssue=''; state.from='home';go('home');break;
+        resetAssessment(); state.from='home';go('home');break;
       case 'print':window.print();break;
     }
   }
