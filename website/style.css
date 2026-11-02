@@ -170,6 +170,7 @@ td:last-child, th:last-child { text-align:right; }
 .source-list { padding-left:26px; overflow-wrap:anywhere; }
 .source-list li { margin:0 0 13px; }
 .result-preference { border:1px solid var(--rule); border-radius:10px; padding:15px; margin:18px 0; }.result-preference legend { font-weight:700; padding:0 6px; }.result-preference label { margin-right:18px; font-size:.9rem; }.result-preference input { accent-color:var(--blue); }
+.summary-mode .optional-detail, .summary-mode .impact-card { display:none; }
 .howto-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin:28px 0; }.howto-steps article { padding:20px; border:1px solid var(--rule); border-radius:13px; background:var(--surface); }.howto-steps b { color:#78a4c7; }.howto-steps h2 { margin:19px 0 8px; font-size:1.1rem; }.howto-steps p { color:var(--secondary); font-size:.84rem; margin:0; }
 @keyframes floatOrb { 0%,100% { transform:translateY(0) scale(1); } 50% { transform:translateY(-5px) scale(1.03); } }
 @keyframes orbitSpin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }

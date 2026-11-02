@@ -6,7 +6,7 @@
   const C = window.BurnoutCore;
   if (!C) throw new Error('The assessment data could not be loaded.');
   const root = document.getElementById('app');
-  const state = { screen: 'home', index: 0, answers: {}, consent: false, from: 'home', error: '', quickIssue: '', resultStyle: 'both', mode: 'assessment', selectedRecords: [], recordView: null, showRecycle: false, progressDate: today() };
+  const state = { screen: 'home', index: 0, answers: {}, consent: false, from: 'home', error: '', quickIssue: '', resultStyle: 'summary', mode: 'assessment', selectedRecords: [], recordView: null, showRecycle: false, progressDate: today() };
   const targetedPrompts = {
     coworkers:['I feel tense before interacting with a coworker.','A coworker’s communication makes it harder for me to work calmly.','I avoid raising concerns because I expect the conversation to go badly.','Workplace conflict stays on my mind after the interaction ends.','I feel that a coworker does not respect my boundaries.','I am unclear about who owns tasks when working with this coworker.','Small misunderstandings with this coworker grow into larger problems.','I do not feel safe asking this coworker for clarification.','I receive feedback from this coworker in a way that feels discouraging.','This coworker interrupts my ability to focus.','I worry that speaking up will damage the working relationship.','The conflict affects my confidence at work.','I have not had a calm opportunity to discuss the issue.','Our expectations about communication are different.','I feel responsible for managing the other person’s reactions.','The situation makes me withdraw from the team.','I replay difficult conversations after work.','The problem has continued without a clear agreement.','I lack support when collaboration breaks down.','I am unsure who can help resolve the issue fairly.','I find it difficult to separate the person from the work problem.','The conflict affects the quality of my work.','I feel pressure to accept behaviour that is not workable.','I need a clearer boundary or working agreement.','I would benefit from a supported conversation about this situation.'],
     workload:['My workload is too large for the time available.','I regularly face more deadlines than I can realistically meet.','New tasks arrive before earlier tasks are finished.','I work through breaks to keep up.','I find it difficult to decide what should come first.','My workload changes without enough planning time.','I often take work home or continue thinking about it after hours.','I feel pressure to say yes to every new request.','Tasks are distributed in a way that feels unbalanced.','I do not have enough staffing or resources for the work expected.','I worry that quality will suffer because there is too much to do.','Meetings leave too little time for focused work.','I am expected to be available across too many channels.','Urgent requests regularly interrupt important work.','I lack a realistic stopping point at the end of the day.','I have had little chance to recover between demanding tasks.','My priorities are unclear when work conflicts.','I feel behind even when I work hard.','Deadlines are set without enough information about the task.','I am judged on output without the necessary support.','The pace of work is difficult to sustain.','I postpone rest because the workload feels endless.','I need help deciding which work can wait.','I would benefit from a clearer priority agreement.','The current workload is affecting my energy outside work.'],
@@ -14,8 +14,16 @@
     exhaustion:['I feel tired before my workday has properly started.','I feel physically drained by ordinary tasks.','I feel emotionally exhausted by daily demands.','I find it difficult to recover after work.','I feel worn out even after resting.','I have less energy for family, friends, or personal activities.','I struggle to concentrate when I am tired.','I feel irritable because my energy is low.','I postpone basic self-care when I am exhausted.','I feel that small tasks require too much effort.','I wake up already thinking about how tired I feel.','I need longer breaks than usual to continue working.','I feel detached from activities I normally care about.','I have difficulty switching off work thoughts.','My sleep or rest does not feel refreshing.','I feel less patient in conversations.','I have less motivation to begin important tasks.','I make more mistakes when my energy is low.','I feel pressure to keep going despite exhaustion.','I find it hard to notice what I need until I am overwhelmed.','My exhaustion affects my confidence.','I avoid social contact because I do not have enough energy.','I am concerned that this level of exhaustion will continue.','I need a more sustainable recovery routine.','I would benefit from additional support for my energy and wellbeing.']
   };
   const targetedGroups = Object.fromEntries(Object.keys(targetedPrompts).map(key => [key, targetedPrompts[key].map((text,index) => ({id:`T_${key}_${index+1}`, section:'targeted', scale:'agreement', polarity:'negative', text}))]));
+  const mixedAssessmentItems = (() => {
+    const items = [...C.cbiItems, ...C.workplaceItems];
+    for (let index = items.length - 1; index > 0; index--) {
+      const swap = Math.floor(Math.random() * (index + 1));
+      [items[index], items[swap]] = [items[swap], items[index]];
+    }
+    return items;
+  })();
   function activeItems() {
-    if (state.mode !== 'targeted' || !targetedGroups[state.quickIssue]) return C.items;
+    if (state.mode !== 'targeted' || !targetedGroups[state.quickIssue]) return mixedAssessmentItems;
     return targetedGroups[state.quickIssue].slice(0, 15);
   }
   function targetedScore(items) {
@@ -67,7 +75,7 @@
       personal:result.personal,
       work:result.work,
       areas:result.areas.map(area=>({name:area.name,score:area.score,short:area.short})),
-      responses:assessmentResponses(C.items),
+      responses:assessmentResponses(mixedAssessmentItems),
       report:{
         type:'full',
         summary:scoreMeaning(result.personal,result.work),
@@ -230,8 +238,8 @@
       return [{label:reliefGuides[state.quickIssue]?.title || 'Focused concern', score:targetedScore(items), count:answered.length}];
     }
     const groups = [
-      {id:'personal', label:'Personal burnout', items:C.cbiItems.filter(item=>item.section==='personal')},
-      {id:'work', label:'Work-related burnout', items:C.cbiItems.filter(item=>item.section==='work').concat(C.workplaceItems)}
+      {id:'personal', label:'Personal burnout', items:C.cbiItems},
+      {id:'work', label:'Work-related burnout', items:C.workplaceItems}
     ];
     return groups.map(group => {
       const answered=group.items.filter(item=>C.validatedAnswer(state.answers,item.id)!==null);
@@ -335,12 +343,12 @@
     return `<main id="main" class="container content" tabindex="-1" dir="${dir()}">
       ${link('home', `← ${tx('Back')}`, 'back-link')}
       <h1>${tx('Before you start')}</h1>
-      <p>The first 13 questions ask about exhaustion. The next 12 ask about your workplace.</p>
+      <p>The 25 questions are mixed into a random order: 13 personal and work-exhaustion questions, plus 12 workplace questions.</p>
       <p>There are no right or wrong answers. Choose the answer that best describes your experience.</p>
       <div class="notice" role="note"><strong>Important</strong><p>The results are for information only. A score is not a diagnosis or a percentage chance of having burnout. If your symptoms are severe or ongoing, speak to a qualified healthcare professional.</p></div>
       <p>We do not ask for your name. Answers are processed only in this browser and are cleared when you close or refresh the page.</p>
       <label class="consent-row"><input type="checkbox" id="consent" ${state.consent?'checked':''}><span>I understand that this is not a medical assessment.</span></label>
-      <fieldset class="result-preference"><legend>${tx('How do you want your results?')}</legend><label><input type="radio" name="result-style" value="both" ${state.resultStyle==='both'?'checked':''}> ${tx('Quick summary')}</label><label><input type="radio" name="result-style" value="detailed" ${state.resultStyle==='detailed'?'checked':''}> ${tx('Detailed explanations')}</label></fieldset>
+      <fieldset class="result-preference"><legend>${tx('How do you want your results?')}</legend><label><input type="radio" name="result-style" value="summary" ${state.resultStyle==='summary'?'checked':''}> ${tx('Normal summary')}</label><label><input type="radio" name="result-style" value="detailed" ${state.resultStyle==='detailed'?'checked':''}> ${tx('Detailed analysis')}</label></fieldset>
       <p class="error" id="consent-error" role="alert" ${state.error?'':'hidden'}>${state.error?escapeHtml(state.error):''}</p>
       <button class="button primary" type="button" data-action="begin">${tx('Continue')}</button>
     </main>`;
@@ -465,8 +473,8 @@
       <h2>What is Burnout Insight?</h2>
       <p>Burnout Insight is a student educational project. It helps people reflect on exhaustion and their workplace experience. It is not affiliated with any of the organizations listed below.</p>
       <h2>Where do the questions come from?</h2>
-      <p><strong>The first 13 questions</strong> come from the published English Copenhagen Burnout Inventory. They measure personal exhaustion and work-related exhaustion.</p>
-      <p><strong>The next 12 questions</strong> are original questions created for this project using the Six Areas of Worklife framework. They have not been clinically or psychometrically validated.</p>
+      <p><strong>Thirteen questions</strong> come from the published English Copenhagen Burnout Inventory. They measure personal exhaustion and work-related exhaustion.</p>
+      <p><strong>Twelve workplace questions</strong> are original questions created for this project using the Six Areas of Worklife framework. They have not been clinically or psychometrically validated.</p>
       <p>The Job Demands–Resources model is used only to explain possible relationships and suggest next steps.</p>
       <h2>How is your information handled?</h2>
       <p>Your answers stay in the browser while this page is open. We do not ask for your name or send responses to a server. The optional progress plan is stored only on this device when browser storage is available.</p>
@@ -551,7 +559,7 @@
         if(!state.consent) {state.error='Please confirm that you understand the information above.';render();document.getElementById('consent')?.focus();return;}
         resetAssessment(); state.consent=true; go('question');break;
       case 'back': state.index>0?state.index--:state.screen='intro';go(state.screen);break;
-      case 'resume': state.index=Math.max(0,C.items.findIndex(q=>C.validatedAnswer(state.answers,q.id)===null));go('question');break;
+      case 'resume': state.index=Math.max(0,mixedAssessmentItems.findIndex(q=>C.validatedAnswer(state.answers,q.id)===null));go('question');break;
       case 'about': state.from=state.screen;go('about');break;
       case 'return': go(state.from==='about'?'home':state.from);break;
       case 'restart':
