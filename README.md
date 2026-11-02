@@ -2,6 +2,8 @@
 
 Burnout Insight is a small, English-only website for reflecting on exhaustion and workplace pressure. It is designed to be easy to open, easy to use, and private.
 
+For the complete feature, benefit, scoring-method, CBI, Six Areas of Worklife, JD-R, privacy, and repository guide, read [`docs/Burnout_Insight_Repository_Guide.pdf`](docs/Burnout_Insight_Repository_Guide.pdf) or [`docs/Burnout_Insight_Repository_Guide.md`](docs/Burnout_Insight_Repository_Guide.md).
+
 ## What the tool can do
 
 - Ask 25 questions in a mixed order.

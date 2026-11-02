@@ -6,101 +6,290 @@ endobj
 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
 endobj
 3 0 obj
-<< /Length 3252 >>
+<< /Length 3245 >>
 stream
-BT /B 16 Tf 54 790 Td (Burnout Insight - Repository Guide) Tj ET
-BT /R 10 Tf 54 765 Td (A simple guide to the purpose, features, structure, scoring, privacy, and development) Tj ET
-BT /R 10 Tf 54 750 Td (workflow of the Burnout Insight website.) Tj ET
-BT /B 16 Tf 54 729 Td (1. Project purpose) Tj ET
-BT /R 10 Tf 54 704 Td (Burnout Insight is a standalone English website for educational reflection on exhaustion and) Tj ET
-BT /R 10 Tf 54 689 Td (workplace pressure. It runs in a browser and does not require an account, server, or) Tj ET
-BT /R 10 Tf 54 674 Td (database.) Tj ET
-BT /R 10 Tf 54 653 Td (The project helps a person understand patterns in personal and work-related exhaustion and) Tj ET
-BT /R 10 Tf 54 638 Td (provides practical, non-clinical suggestions for workplace concerns and recovery.) Tj ET
-BT /R 10 Tf 54 617 Td (The site is not a medical diagnostic tool.) Tj ET
-BT /B 16 Tf 54 596 Td (2. What the tool can do) Tj ET
-BT /R 10 Tf 54 571 Td (- Ask 25 mixed questions: 13 CBI exhaustion questions and 12 workplace questions.) Tj ET
-BT /R 10 Tf 54 550 Td (- Update Personal burnout and Work-related burnout meters during the assessment.) Tj ET
-BT /R 10 Tf 54 529 Td (- Use Enter to submit a selected answer and move to the next question.) Tj ET
-BT /R 10 Tf 54 508 Td (- Show lower, elevated, and higher ranges with matching colors.) Tj ET
-BT /R 10 Tf 54 487 Td (- Provide Immediate support check-ins for workload, control, coworker tension, or) Tj ET
-BT /R 10 Tf 54 472 Td (exhaustion.) Tj ET
-BT /R 10 Tf 54 451 Td (- Save complete reports and all question/answer details in browser records.) Tj ET
-BT /R 10 Tf 54 430 Td (Review, delete, restore, and export saved reports.) Tj ET
-BT /R 10 Tf 54 409 Td (- Create a formatted report that can be saved as a real PDF from the browser print dialog.) Tj ET
-BT /R 10 Tf 54 388 Td (- Provide a private seven-day progress plan.) Tj ET
-BT /B 16 Tf 54 367 Td (3. Main user flow) Tj ET
-BT /R 10 Tf 54 342 Td (- Choose Find my pattern for the full assessment, or Get immediate help for a focused) Tj ET
-BT /R 10 Tf 54 327 Td (check-in.) Tj ET
-BT /R 10 Tf 54 306 Td (- Answer each question. Select an option and press Enter, or click Continue.) Tj ET
-BT /R 10 Tf 54 285 Td (- Review the colored meters, explanations, and suggested next steps.) Tj ET
-BT /R 10 Tf 54 264 Td (- Open Records to review saved reports and select Create PDF report.) Tj ET
-BT /R 10 Tf 54 243 Td (- Choose Save as PDF in the browser print dialog.) Tj ET
-BT /B 16 Tf 54 222 Td (4. Repository structure) Tj ET
-BT /R 10 Tf 54 197 Td (- website/index.html - generated standalone browser file.) Tj ET
-BT /R 10 Tf 54 176 Td (- website/app.js - pages, survey flow, meters, records, reports, exports, and interactions.) Tj ET
-BT /R 10 Tf 54 155 Td (- website/core.js - questions, answer scales, scoring rules, and sources.) Tj ET
-BT /R 10 Tf 54 134 Td (- website/style.css - layout, colors, responsive design, and print styling.) Tj ET
-BT /R 10 Tf 54 113 Td (- website/build.py - combines the source files into index.html.) Tj ET
-BT /R 10 Tf 54 92 Td (docs/Burnout_Insight_Repository_Guide.md - source version of this guide.) Tj ET
-BT /R 10 Tf 54 71 Td (docs/Burnout_Insight_Repository_Guide.pdf - PDF version of this guide.) Tj ET
+BT /B 22 Tf 52 790 Td (Burnout Insight ? Complete Website and Repository Guide) Tj ET
+BT /B 15 Tf 52 749 Td (1. What Burnout Insight is) Tj ET
+BT /R 9.2 Tf 52 715 Td (Burnout Insight is an English-only browser website for learning about exhaustion, work) Tj ET
+BT /R 9.2 Tf 52 702 Td (pressure, and possible workplace causes. It is designed as a private educational self-check,) Tj ET
+BT /R 9.2 Tf 52 689 Td (not as a medical or psychological diagnosis.) Tj ET
+BT /R 9.2 Tf 52 670 Td (The website helps a person:) Tj ET
+BT /R 9.2 Tf 52 651 Td (- Notice personal exhaustion patterns.) Tj ET
+BT /R 9.2 Tf 52 638 Td (- Notice exhaustion connected with work.) Tj ET
+BT /R 9.2 Tf 52 625 Td (- Review workplace conditions that may add pressure.) Tj ET
+BT /R 9.2 Tf 52 612 Td (- Understand what the scores mean in simple language.) Tj ET
+BT /R 9.2 Tf 52 599 Td (- Choose practical next steps.) Tj ET
+BT /R 9.2 Tf 52 586 Td (- Save and review complete reports later.) Tj ET
+BT /R 9.2 Tf 52 573 Td (- Track small actions with a private seven-day plan.) Tj ET
+BT /R 9.2 Tf 52 554 Td (It works as a standalone website. There is no required account, server, login, or database.) Tj ET
+BT /B 15 Tf 52 535 Td (2. What the website can do) Tj ET
+BT /B 12 Tf 52 501 Td (Full 25-question assessment) Tj ET
+BT /R 9.2 Tf 52 471 Td (The full survey contains 25 questions in a mixed random order:) Tj ET
+BT /R 9.2 Tf 52 452 Td (- 13 CBI exhaustion questions.) Tj ET
+BT /R 9.2 Tf 52 439 Td (- 12 workplace questions.) Tj ET
+BT /R 9.2 Tf 52 420 Td (The questions are not shown as ?all personal first, then all work? questions. They are mixed to) Tj ET
+BT /R 9.2 Tf 52 407 Td (make the assessment feel more natural.) Tj ET
+BT /R 9.2 Tf 52 388 Td (The survey provides:) Tj ET
+BT /R 9.2 Tf 52 369 Td (- One question at a time.) Tj ET
+BT /R 9.2 Tf 52 356 Td (- Progress indicator.) Tj ET
+BT /R 9.2 Tf 52 343 Td (- Question-specific practical advice.) Tj ET
+BT /R 9.2 Tf 52 330 Td (- Two live meters during the survey.) Tj ET
+BT /R 9.2 Tf 52 317 Td (- Colored lower, elevated, and higher ranges.) Tj ET
+BT /R 9.2 Tf 52 304 Td (- Enter-key submission after an answer is selected.) Tj ET
+BT /R 9.2 Tf 52 291 Td (- Back navigation and the ability to change an answer.) Tj ET
+BT /R 9.2 Tf 52 278 Td (- Responsive layout for desktop and mobile.) Tj ET
+BT /R 9.2 Tf 52 259 Td (The live meters are:) Tj ET
+BT /R 9.2 Tf 52 240 Td (1. Personal burnout ? based on the 13 CBI exhaustion questions.) Tj ET
+BT /R 9.2 Tf 52 227 Td (2. Work-related burnout ? based on the 12 workplace questions in the live survey view.) Tj ET
+BT /R 9.2 Tf 52 208 Td (The final report also calculates the official CBI personal and CBI work-related scores) Tj ET
+BT /R 9.2 Tf 52 195 Td (separately, together with the six workplace-area scores.) Tj ET
+BT /B 12 Tf 52 176 Td (Immediate Support) Tj ET
+BT /R 9.2 Tf 52 146 Td (Immediate Support is a shorter focused survey for a specific concern. Available areas include:) Tj ET
+BT /R 9.2 Tf 52 127 Td (- Workload.) Tj ET
+BT /R 9.2 Tf 52 114 Td (- Control and decision-making.) Tj ET
+BT /R 9.2 Tf 52 101 Td (- Coworker tension or conflict.) Tj ET
+BT /R 9.2 Tf 52 88 Td (- Exhaustion and energy.) Tj ET
+BT /R 9.2 Tf 52 69 Td (Each focused report can show:) Tj ET
 endstream
 endobj
 4 0 obj
-<< /Length 2165 >>
+<< /Length 3337 >>
 stream
-BT /B 16 Tf 54 784 Td (5. Scoring design) Tj ET
-BT /R 10 Tf 54 759 Td (- CBI answer choices become 100, 75, 50, 25, or 0.) Tj ET
-BT /R 10 Tf 54 738 Td (- The personal score averages P01-P06.) Tj ET
-BT /R 10 Tf 54 717 Td (- The work-related CBI score averages W01-W07. W07 is reverse-scored because it asks about) Tj ET
-BT /R 10 Tf 54 702 Td (energy during leisure time.) Tj ET
-BT /R 10 Tf 54 681 Td (- The 12 workplace questions cover Workload, Control, Reward, Community, Fairness, and) Tj ET
-BT /R 10 Tf 54 666 Td (Values.) Tj ET
-BT /R 10 Tf 54 645 Td (- Severity bands are Lower below 34, Elevated from 34 through 66, and Higher at 67 or above.) Tj ET
-BT /R 10 Tf 54 630 Td (These are presentation bands, not clinical cutoffs.) Tj ET
-BT /B 16 Tf 54 609 Td (6. Records, privacy, and reports) Tj ET
-BT /R 10 Tf 54 584 Td (- Records stay in browser local storage. No account or server upload is required.) Tj ET
-BT /R 10 Tf 54 563 Td (- Saved reports include scores, workplace analysis, recommendations, report date/time, and) Tj ET
-BT /R 10 Tf 54 548 Td (response details.) Tj ET
-BT /R 10 Tf 54 527 Td (- PDF export uses the browser print dialog because a standalone page cannot silently create) Tj ET
-BT /R 10 Tf 54 512 Td (a valid PDF without a PDF library or server.) Tj ET
-BT /R 10 Tf 54 491 Td (- Browser storage can be cleared, and reports may contain sensitive personal reflections.) Tj ET
-BT /B 16 Tf 54 470 Td (7. Development workflow) Tj ET
-BT /R 10 Tf 54 445 Td (- After editing app.js, core.js, or style.css, run: python website/build.py) Tj ET
-BT /R 10 Tf 54 424 Td (- Run scoring tests: node Burnout_Insight_ALL_IN_ONE/tests/scoring.test.cjs) Tj ET
-BT /R 10 Tf 54 403 Td (- Check JavaScript syntax: node --check website/app.js) Tj ET
-BT /R 10 Tf 54 382 Td (- Synchronize the generated index.html before publishing.) Tj ET
-BT /B 16 Tf 54 361 Td (8. Important limitation) Tj ET
-BT /R 10 Tf 54 336 Td (- Burnout Insight is an educational reflection tool. It cannot determine whether a person) Tj ET
-BT /R 10 Tf 54 321 Td (has burnout or another health condition and should not replace qualified professional) Tj ET
-BT /R 10 Tf 54 306 Td (support.) Tj ET
+BT /R 9.2 Tf 52 790 Td (- The selected concern.) Tj ET
+BT /R 9.2 Tf 52 777 Td (- Number of questions answered.) Tj ET
+BT /R 9.2 Tf 52 764 Td (- Score from 0 to 100.) Tj ET
+BT /R 9.2 Tf 52 751 Td (- Colored percentage meter.) Tj ET
+BT /R 9.2 Tf 52 738 Td (- Severity range.) Tj ET
+BT /R 9.2 Tf 52 725 Td (- Explanation of the result.) Tj ET
+BT /R 9.2 Tf 52 712 Td (- Practical suggestions.) Tj ET
+BT /R 9.2 Tf 52 699 Td (- Alternative check-in ideas when appropriate.) Tj ET
+BT /R 9.2 Tf 52 686 Td (- Every focused question and answer in the saved record.) Tj ET
+BT /B 12 Tf 52 667 Td (Results and explanations) Tj ET
+BT /R 9.2 Tf 52 637 Td (The full result page can include:) Tj ET
+BT /R 9.2 Tf 52 618 Td (- Personal exhaustion meter.) Tj ET
+BT /R 9.2 Tf 52 605 Td (- Work-related exhaustion meter.) Tj ET
+BT /R 9.2 Tf 52 592 Td (- Score ranges and descriptions.) Tj ET
+BT /R 9.2 Tf 52 579 Td (- Workplace area cards.) Tj ET
+BT /R 9.2 Tf 52 566 Td (- A normal summary of the burnout pattern.) Tj ET
+BT /R 9.2 Tf 52 553 Td (- Detailed analysis of workplace conditions.) Tj ET
+BT /R 9.2 Tf 52 540 Td (- Suggested actions for the person.) Tj ET
+BT /R 9.2 Tf 52 527 Td (- Possible actions for an employer or organization.) Tj ET
+BT /R 9.2 Tf 52 514 Td (- A best starting point.) Tj ET
+BT /R 9.2 Tf 52 501 Td (- Safety guidance about when to seek professional support.) Tj ET
+BT /R 9.2 Tf 52 488 Td (- Explanation of the assessment methods and limitations.) Tj ET
+BT /R 9.2 Tf 52 475 Td (- A private seven-day improvement plan.) Tj ET
+BT /R 9.2 Tf 52 456 Td (The user can choose a normal summary or detailed analysis. The normal summary is shorter;) Tj ET
+BT /R 9.2 Tf 52 443 Td (detailed analysis contains more workplace explanation and supporting information.) Tj ET
+BT /B 12 Tf 52 424 Td (Records and history) Tj ET
+BT /R 9.2 Tf 52 394 Td (Completed assessments are saved as full reports, not only as raw answers. Records can include:) Tj ET
+BT /R 9.2 Tf 52 375 Td (- Report type and name.) Tj ET
+BT /R 9.2 Tf 52 362 Td (- Date and time.) Tj ET
+BT /R 9.2 Tf 52 349 Td (- Personal and work-related scores.) Tj ET
+BT /R 9.2 Tf 52 336 Td (- Workplace-area scores.) Tj ET
+BT /R 9.2 Tf 52 323 Td (- Explanations.) Tj ET
+BT /R 9.2 Tf 52 310 Td (- Recommendations.) Tj ET
+BT /R 9.2 Tf 52 297 Td (- All question and answer pairs.) Tj ET
+BT /R 9.2 Tf 52 284 Td (- Immediate Support scores and guidance.) Tj ET
+BT /R 9.2 Tf 52 265 Td (The Records page allows users to:) Tj ET
+BT /R 9.2 Tf 52 246 Td (- Open and review a saved report.) Tj ET
+BT /R 9.2 Tf 52 233 Td (- Keep multiple reports from different dates.) Tj ET
+BT /R 9.2 Tf 52 220 Td (- Select several reports.) Tj ET
+BT /R 9.2 Tf 52 207 Td (- Download or print a combined report.) Tj ET
+BT /R 9.2 Tf 52 194 Td (- Delete a report.) Tj ET
+BT /R 9.2 Tf 52 181 Td (- Restore a deleted report from the recycle bin.) Tj ET
+BT /R 9.2 Tf 52 168 Td (- Permanently empty the recycle bin.) Tj ET
+BT /R 9.2 Tf 52 149 Td (The Records link stays available even when there are no saved records.) Tj ET
+BT /B 12 Tf 52 130 Td (Professional report and PDF output) Tj ET
+BT /R 9.2 Tf 52 100 Td (The report layout is designed for review or submission. It can contain:) Tj ET
+BT /R 9.2 Tf 52 81 Td (- Burnout Insight title and report heading.) Tj ET
+BT /R 9.2 Tf 52 68 Td (- Report name and report number.) Tj ET
 endstream
 endobj
 5 0 obj
-<< /Type /Page /Parent 7 0 R /MediaBox [0 0 595 842] /Resources << /Font << /R 1 0 R /B 2 0 R >> >> /Contents 3 0 R >>
+<< /Length 3503 >>
+stream
+BT /R 9.2 Tf 52 790 Td (- Date and time.) Tj ET
+BT /R 9.2 Tf 52 777 Td (- Colored score graphs.) Tj ET
+BT /R 9.2 Tf 52 764 Td (- Percentage values.) Tj ET
+BT /R 9.2 Tf 52 751 Td (- Workplace analysis.) Tj ET
+BT /R 9.2 Tf 52 738 Td (- Advice and next steps.) Tj ET
+BT /R 9.2 Tf 52 725 Td (- Full responses.) Tj ET
+BT /R 9.2 Tf 52 712 Td (- Multiple reports in one document.) Tj ET
+BT /R 9.2 Tf 52 693 Td (Because this is a standalone browser application, the report uses the browser print system.) Tj ET
+BT /R 9.2 Tf 52 680 Td (Select Create PDF report, then choose Save as PDF in the print dialog to create a real .pdf) Tj ET
+BT /R 9.2 Tf 52 667 Td (file.) Tj ET
+BT /B 12 Tf 52 648 Td (Dashboard) Tj ET
+BT /R 9.2 Tf 52 618 Td (The home dashboard provides circular visual meters with severity colors. It can combine saved) Tj ET
+BT /R 9.2 Tf 52 605 Td (records and current answers to give an overall view. The dashboard is intended to help a user) Tj ET
+BT /R 9.2 Tf 52 592 Td (notice trends across assessments, not to create a clinical diagnosis.) Tj ET
+BT /B 12 Tf 52 573 Td (Seven-day progress plan) Tj ET
+BT /R 9.2 Tf 52 543 Td (After an assessment, the website can create a private seven-day plan. It can include:) Tj ET
+BT /R 9.2 Tf 52 524 Td (- Small recovery actions.) Tj ET
+BT /R 9.2 Tf 52 511 Td (- A realistic work boundary.) Tj ET
+BT /R 9.2 Tf 52 498 Td (- One action related to a workplace area.) Tj ET
+BT /R 9.2 Tf 52 485 Td (- Daily checkboxes.) Tj ET
+BT /R 9.2 Tf 52 472 Td (- Daily energy check-ins.) Tj ET
+BT /R 9.2 Tf 52 459 Td (- A weekly view of progress.) Tj ET
+BT /R 9.2 Tf 52 440 Td (The plan is stored locally in the browser.) Tj ET
+BT /B 15 Tf 52 421 Td (3. Methods and models covered) Tj ET
+BT /B 12 Tf 52 387 Td (Copenhagen Burnout Inventory \(CBI\)) Tj ET
+BT /R 9.2 Tf 52 357 Td (The CBI is used to structure the exhaustion questions. It separates:) Tj ET
+BT /R 9.2 Tf 52 338 Td (- Personal burnout ? general physical and emotional exhaustion.) Tj ET
+BT /R 9.2 Tf 52 325 Td (- Work-related burnout ? exhaustion connected with work.) Tj ET
+BT /R 9.2 Tf 52 306 Td (The CBI questions use five answer choices. The application converts them to:) Tj ET
+BT /R 9.2 Tf 52 287 Td (100, 75, 50, 25, 0) Tj ET
+BT /R 9.2 Tf 52 268 Td (The personal score averages P01?P06. The work-related CBI score averages W01?W07. W07 is) Tj ET
+BT /R 9.2 Tf 52 255 Td (reverse-scored because having more energy for family and friends during leisure time indicates) Tj ET
+BT /R 9.2 Tf 52 242 Td (less work-related exhaustion.) Tj ET
+BT /R 9.2 Tf 52 223 Td (The website explains that a higher score means more reported exhaustion on this educational) Tj ET
+BT /R 9.2 Tf 52 210 Td (scale. It does not convert the score into a probability of having burnout.) Tj ET
+BT /B 12 Tf 52 191 Td (Six Areas of Worklife) Tj ET
+BT /R 9.2 Tf 52 161 Td (The 12 project-created workplace questions are organized into six workplace areas:) Tj ET
+BT /R 9.2 Tf 52 142 Td (1. Workload ? amount, pace, deadlines, and time pressure.) Tj ET
+BT /R 9.2 Tf 52 129 Td (2. Control ? influence, autonomy, decision-making, and flexibility.) Tj ET
+BT /R 9.2 Tf 52 116 Td (3. Reward ? recognition, feedback, and whether effort feels valued.) Tj ET
+BT /R 9.2 Tf 52 103 Td (4. Community ? relationships, communication, teamwork, and support.) Tj ET
+BT /R 9.2 Tf 52 90 Td (5. Fairness ? consistency, transparency, and fair treatment.) Tj ET
+BT /R 9.2 Tf 52 77 Td (6. Values ? alignment between work practices and professional values.) Tj ET
+endstream
 endobj
 6 0 obj
-<< /Type /Page /Parent 7 0 R /MediaBox [0 0 595 842] /Resources << /Font << /R 1 0 R /B 2 0 R >> >> /Contents 4 0 R >>
+<< /Length 3821 >>
+stream
+BT /R 9.2 Tf 52 790 Td (Each area has two questions. Positive and negative wording is scored in the correct direction.) Tj ET
+BT /R 9.2 Tf 52 777 Td (These are educational project questions inspired by the framework; they are not presented as) Tj ET
+BT /R 9.2 Tf 52 764 Td (official results from the licensed or official Areas of Worklife Survey.) Tj ET
+BT /B 12 Tf 52 745 Td (Job Demands?Resources \(JD-R\) model) Tj ET
+BT /R 9.2 Tf 52 715 Td (The website uses the JD-R model to explain possible workplace patterns:) Tj ET
+BT /R 9.2 Tf 52 696 Td (- Job demands are pressures that require sustained effort, such as workload, deadlines,) Tj ET
+BT /R 9.2 Tf 52 683 Td (interruptions, emotional demands, or unclear expectations.) Tj ET
+BT /R 9.2 Tf 52 670 Td (- Job resources are supports that help a person manage work, such as autonomy, feedback,) Tj ET
+BT /R 9.2 Tf 52 657 Td (recognition, teamwork, fairness, and practical support.) Tj ET
+BT /R 9.2 Tf 52 638 Td (The model is used to explain why high demands and limited resources may make exhaustion harder) Tj ET
+BT /R 9.2 Tf 52 625 Td (to manage. It is used for education and suggestions, not for diagnosis or proof of causation.) Tj ET
+BT /B 12 Tf 52 606 Td (Severity presentation bands) Tj ET
+BT /R 9.2 Tf 52 576 Td (The interface uses simple descriptive bands:) Tj ET
+BT /R 9.2 Tf 52 557 Td (- Lower ? below 34.) Tj ET
+BT /R 9.2 Tf 52 544 Td (- Elevated ? 34 through 66.) Tj ET
+BT /R 9.2 Tf 52 531 Td (- Higher ? 67 and above.) Tj ET
+BT /R 9.2 Tf 52 512 Td (These are visual communication bands created for the project. They are not medical cutoffs and) Tj ET
+BT /R 9.2 Tf 52 499 Td (do not determine whether someone has burnout.) Tj ET
+BT /B 15 Tf 52 480 Td (4. Benefits of the website) Tj ET
+BT /R 9.2 Tf 52 446 Td (Burnout Insight can help a user:) Tj ET
+BT /R 9.2 Tf 52 427 Td (- Start a private conversation about exhaustion.) Tj ET
+BT /R 9.2 Tf 52 414 Td (- Separate general exhaustion from workplace pressure.) Tj ET
+BT /R 9.2 Tf 52 401 Td (- See which workplace conditions may deserve attention.) Tj ET
+BT /R 9.2 Tf 52 388 Td (- Turn a broad concern into one practical next step.) Tj ET
+BT /R 9.2 Tf 52 375 Td (- Compare reports over time.) Tj ET
+BT /R 9.2 Tf 52 362 Td (- Keep a full record rather than remembering only a final number.) Tj ET
+BT /R 9.2 Tf 52 349 Td (- Prepare for a conversation with a trusted person, manager, occupational-health service, or) Tj ET
+BT /R 9.2 Tf 52 336 Td (professional.) Tj ET
+BT /R 9.2 Tf 52 323 Td (- Notice whether small changes improve daily energy.) Tj ET
+BT /R 9.2 Tf 52 304 Td (For a student, team, or project demonstration, it also shows:) Tj ET
+BT /R 9.2 Tf 52 285 Td (- A complete browser-based assessment flow.) Tj ET
+BT /R 9.2 Tf 52 272 Td (- Data-driven scoring.) Tj ET
+BT /R 9.2 Tf 52 259 Td (- Accessible form interaction.) Tj ET
+BT /R 9.2 Tf 52 246 Td (- Responsive interface design.) Tj ET
+BT /R 9.2 Tf 52 233 Td (- Local storage records.) Tj ET
+BT /R 9.2 Tf 52 220 Td (- Report generation and print styling.) Tj ET
+BT /R 9.2 Tf 52 207 Td (- A clear separation between scientific inspiration and project-created content.) Tj ET
+BT /B 15 Tf 52 188 Td (5. Repository structure) Tj ET
+BT /R 9.2 Tf 52 154 Td (Path - Responsibility) Tj ET
+BT /R 9.2 Tf 52 141 Td (website/index.html - Generated standalone browser file) Tj ET
+BT /R 9.2 Tf 52 128 Td (website/app.js - Pages, routing, survey state, meters, records, reports, exports, and) Tj ET
+BT /R 9.2 Tf 52 115 Td (interactions) Tj ET
+BT /R 9.2 Tf 52 102 Td (website/core.js - Canonical questions, answer scales, CBI scoring, workplace scoring, and) Tj ET
+BT /R 9.2 Tf 52 89 Td (sources) Tj ET
+BT /R 9.2 Tf 52 76 Td (website/style.css - Visual system, responsive layout, severity colors, cards, meters, and print) Tj ET
+BT /R 9.2 Tf 52 63 Td (styles) Tj ET
+endstream
 endobj
 7 0 obj
-<< /Type /Pages /Kids [5 0 R 6 0 R] /Count 2 >>
+<< /Length 3456 >>
+stream
+BT /R 9.2 Tf 52 790 Td (website/build.py - Embeds CSS and JavaScript into index.html) Tj ET
+BT /R 9.2 Tf 52 777 Td (docs/BurnoutInsightRepositoryGuide.md - Source version of this guide) Tj ET
+BT /R 9.2 Tf 52 764 Td (docs/BurnoutInsightRepositoryGuide.pdf - PDF version of this guide) Tj ET
+BT /R 9.2 Tf 52 745 Td (The published repository contains the ready-to-use website and README. The larger development) Tj ET
+BT /R 9.2 Tf 52 732 Td (project contains the regression tests and supporting project files.) Tj ET
+BT /B 15 Tf 52 713 Td (6. Data, privacy, and report storage) Tj ET
+BT /R 9.2 Tf 52 679 Td (The website stores information in the browser under:) Tj ET
+BT /R 9.2 Tf 52 660 Td (- burnout-insight-records-v1) Tj ET
+BT /R 9.2 Tf 52 647 Td (- burnout-insight-recycle-v1) Tj ET
+BT /R 9.2 Tf 52 634 Td (- burnout-insight-progress-v1) Tj ET
+BT /R 9.2 Tf 52 615 Td (No account is required. The application does not send answers to a server. Clearing browser) Tj ET
+BT /R 9.2 Tf 52 602 Td (storage can remove records and progress plans. Reports may contain sensitive personal) Tj ET
+BT /R 9.2 Tf 52 589 Td (reflections, so users should keep downloaded files private.) Tj ET
+BT /B 15 Tf 52 570 Td (7. Development workflow) Tj ET
+BT /R 9.2 Tf 52 536 Td (After editing app.js, core.js, or style.css, rebuild the standalone page:) Tj ET
+BT /R 9.2 Tf 52 517 Td (python website/build.py) Tj ET
+BT /R 9.2 Tf 52 498 Td (Check JavaScript syntax:) Tj ET
+BT /R 9.2 Tf 52 479 Td (node --check website/app.js) Tj ET
+BT /R 9.2 Tf 52 460 Td (Run the scoring regression tests from the development project:) Tj ET
+BT /R 9.2 Tf 52 441 Td (node BurnoutInsightALLINONE/tests/scoring.test.cjs) Tj ET
+BT /R 9.2 Tf 52 422 Td (The generated website/index.html should be synchronized with the source files before) Tj ET
+BT /R 9.2 Tf 52 409 Td (publishing.) Tj ET
+BT /B 15 Tf 52 390 Td (8. Design and accessibility principles) Tj ET
+BT /R 9.2 Tf 52 356 Td (- English-only interface.) Tj ET
+BT /R 9.2 Tf 52 343 Td (- Plain, supportive language.) Tj ET
+BT /R 9.2 Tf 52 330 Td (- Clear headings and consistent visual hierarchy.) Tj ET
+BT /R 9.2 Tf 52 317 Td (- Responsive desktop and mobile layouts.) Tj ET
+BT /R 9.2 Tf 52 304 Td (- Color-coded meters with text labels, not color alone.) Tj ET
+BT /R 9.2 Tf 52 291 Td (- Labeled form controls.) Tj ET
+BT /R 9.2 Tf 52 278 Td (- Focus handling after navigation.) Tj ET
+BT /R 9.2 Tf 52 265 Td (- Keyboard-friendly answer submission.) Tj ET
+BT /R 9.2 Tf 52 252 Td (- Complete records instead of answer-only history.) Tj ET
+BT /R 9.2 Tf 52 239 Td (- Practical suggestions without diagnostic claims.) Tj ET
+BT /R 9.2 Tf 52 226 Td (- Local-first privacy.) Tj ET
+BT /B 15 Tf 52 207 Td (9. Important limitations) Tj ET
+BT /R 9.2 Tf 52 173 Td (Burnout Insight is an educational reflection tool. It cannot determine whether a person has) Tj ET
+BT /R 9.2 Tf 52 160 Td (burnout, depression, anxiety, or another health condition. It does not prove that work caused) Tj ET
+BT /R 9.2 Tf 52 147 Td (exhaustion and does not predict professionalism, performance, or future health.) Tj ET
+BT /R 9.2 Tf 52 128 Td (Persistent, severe, or disruptive symptoms should be discussed with a qualified healthcare or) Tj ET
+BT /R 9.2 Tf 52 115 Td (mental-health professional. Workplace concerns may also be discussed with a trusted support) Tj ET
+BT /R 9.2 Tf 52 102 Td (person, manager, occupational-health service, or appropriate organizational resource.) Tj ET
+endstream
 endobj
 8 0 obj
-<< /Type /Catalog /Pages 7 0 R >>
+<< /Type /Page /Parent 13 0 R /MediaBox [0 0 595 842] /Resources << /Font << /R 1 0 R /B 2 0 R >> >> /Contents 3 0 R >>
+endobj
+9 0 obj
+<< /Type /Page /Parent 13 0 R /MediaBox [0 0 595 842] /Resources << /Font << /R 1 0 R /B 2 0 R >> >> /Contents 4 0 R >>
+endobj
+10 0 obj
+<< /Type /Page /Parent 13 0 R /MediaBox [0 0 595 842] /Resources << /Font << /R 1 0 R /B 2 0 R >> >> /Contents 5 0 R >>
+endobj
+11 0 obj
+<< /Type /Page /Parent 13 0 R /MediaBox [0 0 595 842] /Resources << /Font << /R 1 0 R /B 2 0 R >> >> /Contents 6 0 R >>
+endobj
+12 0 obj
+<< /Type /Page /Parent 13 0 R /MediaBox [0 0 595 842] /Resources << /Font << /R 1 0 R /B 2 0 R >> >> /Contents 7 0 R >>
+endobj
+13 0 obj
+<< /Type /Pages /Kids [8 0 R 9 0 R 10 0 R 11 0 R 12 0 R] /Count 5 >>
+endobj
+14 0 obj
+<< /Type /Catalog /Pages 13 0 R >>
 endobj
 xref
-0 9
+0 15
 0000000000 65535 f 
 0000000009 00000 n 
 0000000079 00000 n 
 0000000154 00000 n 
-0000003458 00000 n 
-0000005675 00000 n 
-0000005809 00000 n 
-0000005943 00000 n 
-0000006006 00000 n 
+0000003451 00000 n 
+0000006840 00000 n 
+0000010395 00000 n 
+0000014268 00000 n 
+0000017776 00000 n 
+0000017911 00000 n 
+0000018046 00000 n 
+0000018182 00000 n 
+0000018318 00000 n 
+0000018454 00000 n 
+0000018539 00000 n 
 trailer
-<< /Size 9 /Root 8 0 R >>
+<< /Size 15 /Root 14 0 R >>
 startxref
-6055
+18590
 %%EOF
