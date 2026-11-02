@@ -231,12 +231,13 @@
     }
     const groups = [
       {id:'personal', label:'Personal exhaustion', items:C.cbiItems.filter(item=>item.section==='personal')},
-      {id:'work', label:'Work-related exhaustion', items:C.cbiItems.filter(item=>item.section==='work')}
+      {id:'work', label:'Work-related exhaustion', items:C.cbiItems.filter(item=>item.section==='work')},
+      {id:'workplace', label:'Workplace pressure', items:C.workplaceItems}
     ];
     return groups.map(group => {
       const answered=group.items.filter(item=>C.validatedAnswer(state.answers,item.id)!==null);
       if (!answered.length) return {...group, score:0, count:0};
-      const score=answered.reduce((sum,item)=>sum+C.cbiItemScore(item,state.answers[item.id]),0)/answered.length;
+      const score=answered.reduce((sum,item)=>sum+(group.id==='workplace'?C.workplaceItemConcern(item,state.answers[item.id]):C.cbiItemScore(item,state.answers[item.id])),0)/answered.length;
       return {...group,score,count:answered.length};
     });
   }
@@ -316,6 +317,9 @@
     ] : [['Personal exhaustion',Math.round(livePersonal||0)],['Work exhaustion',Math.round(liveWork||0)],['Workplace concern',0]];
     const dashboardTag=savedRecords.length ? tx('Overall from')+' '+savedRecords.length+' '+tx('records')+(personalAnswered.length||workAnswered.length?' + current answers':'') : tx('Interactive view');
     const dashboardHtml=dashboardValues.map(([label,value])=>`<div class="live-dial-item">${dial(tx(label),value,'')}</div>`).join('');
+    const overallScore=dashboardValues.reduce((sum,[,value])=>sum+Number(value||0),0)/dashboardValues.length;
+    const overallBand=meterBand(overallScore);
+    const dashboardGraph=dashboardValues.map(([label,value])=>`<div class="graph-line"><span>${escapeHtml(label)}</span><div class="chart-track"><i class="graph-severity ${meterBand(value).className}" style="width:${value}%"></i></div><b>${Number(value).toFixed(1)}</b></div>`).join('');
     return `<main id="main" class="container content" tabindex="-1" dir="${dir()}">
       <section class="home-hero-layout">
       <section class="hero-panel">
@@ -324,7 +328,7 @@
       </section>
       <aside class="choice-rail"><div class="section-kicker">${tx('What do you need today?')}</div><h2>Choose your starting point</h2><div class="choice-grid"><button class="choice-card" data-action="start"><strong>◈</strong><span>${tx('Find my pattern')}</span><small>Answer the questions and understand your exhaustion pattern.</small></button><button class="choice-card" data-action="relief" data-issue="exhaustion"><strong>✦</strong><span>${tx('Get immediate help')}</span><small>Start with a short practical step for today.</small></button><button class="choice-card" data-action="howto"><strong>ⓘ</strong><span>${tx('How it works')}</span><small>Learn about the steps, results, and privacy.</small></button></div></aside>
       </section>
-      <section class="live-dashboard home-dashboard-top"><div class="dashboard-heading"><div><div class="section-kicker">${tx('Your wellbeing dashboard')}</div><h2>${tx('Notice the signals before they become overwhelming.')}</h2></div><span class="dashboard-tag">${dashboardTag}</span></div><div class="live-dial-grid">${dashboardHtml}</div><p class="dashboard-note">${savedRecords.length?tx('This dashboard combines your saved assessments.'):tx('Each dial updates as answers become available.')}</p></section>
+      <section class="live-dashboard home-dashboard-top"><div class="dashboard-heading"><div><div class="section-kicker">${tx('Your wellbeing dashboard')}</div><h2>${tx('Overall work wellbeing summary')}</h2></div><span class="dashboard-tag">${dashboardTag}</span></div><div class="live-dial-grid">${dashboardHtml}</div><div class="dashboard-graph" role="img" aria-label="Overall graphical summary of personal exhaustion, work-related exhaustion, and workplace pressure"><div class="graph-y"><span>Higher pressure</span><span>Lower pressure</span></div><div class="graph-lines">${dashboardGraph}</div></div><p class="dashboard-summary"><strong>${overallBand.label}.</strong> ${overallBand.guidance}</p><p class="dashboard-note">${savedRecords.length?tx('This dashboard combines saved reports and current answers.'):tx('Each meter updates as answers become available.')}</p></section>
       ${quickRelief()}
       <p class="help-note">Educational tool only: it cannot diagnose burnout, depression, or another health condition.</p>
     </main>`;
@@ -354,13 +358,13 @@
     const meters=partialMeter();
     return `<main id="main" class="container content question-content" tabindex="-1" dir="${dir()}">
       ${link('back', `← ${tx('Back')}`, 'back-link')}
-      <div class="survey-overview"><div>      <p class="step">${tx('Question')} ${state.index+1} of ${questions.length}</p><div class="progress" aria-label="Assessment progress"><span style="width:${pct}%"></span></div></div><div class="live-meters">${meters.map(liveMeterCard).join('')}</div></div>
+      <div class="survey-overview"><div><p class="step">${tx('Question')} ${state.index+1} of ${questions.length}</p><div class="progress" aria-label="Assessment progress"><span style="width:${pct}%"></span></div></div></div>
       <div class="question-layout question-enter"><form id="question-form" novalidate><p class="section-label">${escapeHtml(groupName(item))}</p><fieldset class="question-field" id="question-field" tabindex="-1" aria-describedby="answer-error">
         <legend><span class="question-eyebrow">A moment to check in</span><h1 id="question-title">${escapeHtml(displayQuestion(item))}</h1></legend>
         <p class="hint">${tx('Select one answer.')}</p>
         <p class="error" role="alert" id="answer-error" ${state.error?'':'hidden'}>${state.error?escapeHtml(state.error):''}</p>
         <div class="radio-options">${C.optionsFor(item).map((answer, i) => `<label class="radio-option"><input type="radio" name="answer" value="${i}" ${selected===i?'checked':''}><span>${escapeHtml(displayOption(answer))}</span></label>`).join('')}</div>
-      </fieldset><button class="button primary" type="submit">${state.index===questions.length-1?'See my results':'Continue'}</button></form>${questionAdvice(item)}</div>
+      </fieldset><button class="button primary" type="submit">${state.index===questions.length-1?'See my results':'Continue'}</button></form><div class="question-side"><div class="live-meters">${meters.map(liveMeterCard).join('')}</div>${questionAdvice(item)}</div></div>
     </main>`;
   }
   function meterBand(score) {
