@@ -614,21 +614,39 @@ td:last-child, th:last-child { text-align:right; }
   }
   function home() {
     const savedRecords=readRecords();
-    const averageSaved = key => {
-      const values=savedRecords.map(record => Number(record[key])).filter(Number.isFinite);
-      return values.length ? Math.round(values.reduce((sum,value)=>sum+value,0)/values.length) : 0;
+    const combinedScore = (key, currentScore, currentCount, totalQuestions) => {
+      const saved=savedRecords.map(record => Number(record[key])).filter(Number.isFinite);
+      const weighted=saved.reduce((sum,value)=>sum+value*totalQuestions,0);
+      const count=saved.length*totalQuestions;
+      if (Number.isFinite(currentScore) && currentCount) return (weighted+currentScore*currentCount)/(count+currentCount);
+      return count ? weighted/count : 0;
     };
     const averageAreas = savedRecords.flatMap(record => record.areas || []);
+    const currentAreaScores = C.areaMeta.map(area => {
+      const items=C.workplaceItems.filter(item=>item.area===area.id);
+      const answered=items.filter(item=>C.validatedAnswer(state.answers,item.id)!==null);
+      return answered.length ? {
+        score:answered.reduce((sum,item)=>sum+C.workplaceItemConcern(item,state.answers[item.id]),0)/answered.length,
+        count:answered.length
+      } : null;
+    });
     const personalAnswered=C.cbiItems.filter(item=>item.section==='personal'&&C.validatedAnswer(state.answers,item.id)!==null);
     const workAnswered=C.cbiItems.filter(item=>item.section==='work'&&C.validatedAnswer(state.answers,item.id)!==null);
     const livePersonal=personalAnswered.length?personalAnswered.reduce((sum,item)=>sum+C.cbiItemScore(item,state.answers[item.id]),0)/personalAnswered.length:null;
     const liveWork=workAnswered.length?workAnswered.reduce((sum,item)=>sum+C.cbiItemScore(item,state.answers[item.id]),0)/workAnswered.length:null;
-    const dashboardValues=savedRecords.length ? [
-      ['Personal exhaustion',averageSaved('personal')],
-      ['Work exhaustion',averageSaved('work')],
-      ['Workplace concern',averageAreas.length ? Math.round(averageAreas.reduce((sum,area)=>sum+Number(area.score||0),0)/averageAreas.length) : 0]
+    const dashboardValues=(savedRecords.length || personalAnswered.length || workAnswered.length) ? [
+      ['Personal exhaustion',combinedScore('personal',livePersonal,personalAnswered.length,6)],
+      ['Work exhaustion',combinedScore('work',liveWork,workAnswered.length,7)],
+      ['Workplace concern',(() => {
+        const savedTotal=averageAreas.reduce((sum,area)=>sum+Number(area.score||0),0);
+        const savedCount=averageAreas.filter(area=>Number.isFinite(Number(area.score))).length;
+        const current=currentAreaScores.filter(Boolean);
+        const currentTotal=current.reduce((sum,area)=>sum+area.score,0);
+        const currentCount=current.length;
+        return savedCount+currentCount ? Math.round((savedTotal+currentTotal)/(savedCount+currentCount)) : 0;
+      })()]
     ] : [['Personal exhaustion',Math.round(livePersonal||0)],['Work exhaustion',Math.round(liveWork||0)],['Workplace concern',0]];
-    const dashboardTag=savedRecords.length ? tx('Overall from')+' '+savedRecords.length+' '+tx('records') : tx('Interactive view');
+    const dashboardTag=savedRecords.length ? tx('Overall from')+' '+savedRecords.length+' '+tx('records')+(personalAnswered.length||workAnswered.length?' + current answers':'') : tx('Interactive view');
     const dashboardHtml=dashboardValues.map(([label,value])=>`<div class="live-dial-item">${dial(tx(label),value,'')}</div>`).join('');
     return `<main id="main" class="container content" tabindex="-1" dir="${dir()}">
       <section class="home-hero-layout">
@@ -883,6 +901,7 @@ td:last-child, th:last-child { text-align:right; }
     if (ev.target.name==='answer' && state.screen==='question') {
       const item=activeItems()[state.index];state.answers[item.id]=Number(ev.target.value);
       const err=document.getElementById('answer-error');if(err)err.hidden=true;
+      render({focusHeading:false});
     }
     if (ev.target.matches('[data-plan-item]')) {
       const plan=readProgress(); if (!plan) return;
