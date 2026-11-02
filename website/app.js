@@ -234,7 +234,7 @@
   }
   function liveMeterCard(group) {
     const band=meterBand(group.score);
-    return `<div class="live-meter"><div class="live-meter-head"><span>${escapeHtml(group.label)}</span><strong>${group.count?group.score.toFixed(0):'—'}<small>/100</small></strong></div><div class="meter compact-meter"><span class="meter-fill ${band.className}" style="width:${group.score}%"></span><i class="meter-marker" style="left:${group.score}%"></i></div><small>${group.count?`${group.count} answered · ${band.label}`:'Answer questions to build this meter'}</small></div>`;
+    return `<div class="live-meter"><div class="live-meter-head"><span>${escapeHtml(group.label)}</span><strong>${group.count?group.score.toFixed(0):'—'}<small>/100</small></strong></div><div class="meter compact-meter"><span class="meter-fill ${band.className}" style="width:${group.score}%"></span><i class="meter-marker" style="left:${group.score}%"></i></div><small>${group.count?`${group.count} answered · ${band.label}`:'Answer questions to build this meter'}</small>${group.count?`<em class="meter-guidance ${band.className}">${band.guidance}</em>`:''}</div>`;
   }
   function questionAdvice(item) {
     const selected=C.validatedAnswer(state.answers,item.id);
@@ -267,6 +267,10 @@
       <div class="relief-options">${Object.entries(reliefGuides).map(([id,item]) => `<button type="button" class="relief-option ${state.quickIssue===id?'selected':''}" data-action="relief" data-issue="${id}"><span class="relief-icon">${id==='coworkers'?'↔':id==='workload'?'▤':id==='control'?'◌':'♡'}</span><span>${item.title}</span></button>`).join('')}</div>
       ${guide ? `<div class="relief-result"><h3>${guide.title}</h3><p>${guide.intro}</p><ol>${guide.steps.map(step=>`<li>${step}</li>`).join('')}</ol><button type="button" class="button secondary" data-action="targeted-start">Answer focused questions</button><button type="button" class="text-link" data-action="start">Take the full assessment</button></div>` : ''}
     </section>`;
+  }
+  function otherCheckIns(exclude='') {
+    const labels={coworkers:'Coworker tension',workload:'Workload and deadlines',control:'Control and interruptions',exhaustion:'Current exhaustion'};
+    return `<section class="result-section check-in-section"><h2>Explore another possible cause</h2><p>If this result does not explain what you are looking for, use a short focused check-in for another work-life area.</p><div class="relief-options">${Object.entries(labels).filter(([id])=>id!==exclude).map(([id,label])=>`<button type="button" class="relief-option" data-action="explore-relief" data-issue="${id}"><span class="relief-icon">${id==='coworkers'?'↔':id==='workload'?'▤':id==='control'?'◌':'♡'}</span><span>${label}</span></button>`).join('')}</div></section>`;
   }
   function home() {
     const savedRecords=readRecords();
@@ -334,9 +338,9 @@
     </main>`;
   }
   function meterBand(score) {
-    if (score < 34) return {label:'Lower reported exhaustion', className:'low', text:'Your answers suggest fewer reported exhaustion symptoms on this educational scale.'};
-    if (score < 67) return {label:'Elevated reported exhaustion', className:'elevated', text:'Your answers suggest some reported exhaustion that may be worth monitoring and discussing.'};
-    return {label:'Higher reported exhaustion', className:'high', text:'Your answers suggest more frequent or intense reported exhaustion. Consider support and practical changes.'};
+    if (score < 34) return {label:'Lower reported exhaustion', className:'low', text:'Your answers suggest fewer reported exhaustion symptoms on this educational scale.', guidance:'Keep the conditions that support your energy and check in again if work changes.'};
+    if (score < 67) return {label:'Elevated reported exhaustion', className:'elevated', text:'Your answers suggest some reported exhaustion that may be worth monitoring and discussing.', guidance:'Choose one pressure point to adjust, protect a recovery break, and monitor the pattern.'};
+    return {label:'Higher reported exhaustion', className:'high', text:'Your answers suggest more frequent or intense reported exhaustion. Consider support and practical changes.', guidance:'Pause where possible, reduce the next demand, and seek trusted or professional support if this persists.'};
   }
   function exhaustionMeter(label, score, explanation) {
     const band = meterBand(score);
@@ -347,6 +351,7 @@
       </div>
       <div class="meter-scale"><span>Lower</span><span>Elevated</span><span>Higher</span></div>
       <p class="meter-status ${band.className}"><strong>${band.label}.</strong> ${band.text}</p>
+      <p class="meter-guidance ${band.className}"><strong>Suggested next step:</strong> ${band.guidance}</p>
     </article>`;
   }
   function impactGraph(personal, work) {
@@ -381,7 +386,7 @@
       const questions = activeItems();
       const answered = questions.filter(item => C.validatedAnswer(state.answers, item.id) !== null).length;
       const score=targetedScore(questions), band=meterBand(score);
-      return `<main id="main" class="container content results-content" tabindex="-1" dir="${dir()}"><div class="section-kicker">Focused support</div><h1>Your next step for ${escapeHtml(guide ? guide.title : 'this concern')}</h1><p class="intro-text">You completed ${answered} of ${questions.length} focused questions. This category score is an educational indicator, not a diagnosis.</p><section class="focused-score-card"><div><span class="focused-score-label">Reported concern level</span><strong>${score.toFixed(0)}<small>/100</small></strong></div><div class="meter focused-meter" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${score.toFixed(0)}"><span class="meter-fill ${band.className}" style="width:${score}%"></span><i class="meter-marker" style="left:${score}%"></i></div><p class="meter-status ${band.className}"><strong>${band.label}.</strong> ${band.text}</p></section><section class="result-section"><h2>What you can try now</h2><div class="advice-item"><h3>${escapeHtml(guide ? guide.title : 'Your selected concern')}</h3><p>${escapeHtml(guide ? guide.intro : 'Choose one small action that supports your energy or working conditions.')}</p><ol>${(guide ? guide.steps : []).map(step=>`<li>${escapeHtml(step)}</li>`).join('')}</ol></div></section><div class="result-controls"><button type="button" class="button primary" data-action="start">Take the full assessment</button>${link('home','Return home')}</div></main>`;
+      return `<main id="main" class="container content results-content" tabindex="-1" dir="${dir()}"><div class="section-kicker">Focused support</div><h1>Your next step for ${escapeHtml(guide ? guide.title : 'this concern')}</h1><p class="intro-text">You completed ${answered} of ${questions.length} focused questions. This category score is an educational indicator, not a diagnosis.</p><section class="focused-score-card"><div><span class="focused-score-label">Reported concern level</span><strong>${score.toFixed(0)}<small>/100</small></strong></div><div class="meter focused-meter" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${score.toFixed(0)}"><span class="meter-fill ${band.className}" style="width:${score}%"></span><i class="meter-marker" style="left:${score}%"></i></div><p class="meter-status ${band.className}"><strong>${band.label}.</strong> ${band.text}</p><p class="meter-guidance ${band.className}"><strong>Suggested next step:</strong> ${band.guidance}</p></section><section class="result-section"><h2>What you can try now</h2><div class="advice-item"><h3>${escapeHtml(guide ? guide.title : 'Your selected concern')}</h3><p>${escapeHtml(guide ? guide.intro : 'Choose one small action that supports your energy or working conditions.')}</p><ol>${(guide ? guide.steps : []).map(step=>`<li>${escapeHtml(step)}</li>`).join('')}</ol></div></section>${otherCheckIns(state.quickIssue)}<div class="result-controls"><button type="button" class="button primary" data-action="start">Take the full assessment</button>${link('home','Return home')}</div></main>`;
     }
     const r = C.scoreAssessment(state.answers);
     if (!r.complete) return `<main id="main" class="container content"><h1>Some questions are missing</h1><p>Complete the remaining questions to see your results.</p><button type="button" class="button primary" data-action="resume">Return to assessment</button></main>`;
@@ -416,6 +421,7 @@
         <div class="notice"><strong>When to seek help</strong><p>Exhaustion can overlap with depression or other health concerns. If symptoms are persistent, severe, or make daily activities difficult, consider talking to a qualified healthcare professional.</p></div>
       </section>
       <section class="result-section"><h2>5. Build a small improvement routine</h2><p>Use your results to create a private seven-day plan. Tick off actions and record your energy each day so you can notice patterns over time.</p><button class="button primary" type="button" data-action="create-progress">Create my seven-day plan</button></section>
+      ${otherCheckIns()}
       <section class="result-section optional-detail"><h2>How this assessment works</h2>
         <p>CBI scores use the average of the relevant questions on a 0–100 scale. The last work-related question is scored in the opposite direction. Workplace scores use two original questions per area. The areas suggested for review use a project-defined rule, not a clinical threshold.</p>
         <p>The three research approaches used are the Copenhagen Burnout Inventory, Six Areas of Worklife, and the Job Demands–Resources model.</p>
@@ -484,6 +490,12 @@
       case 'howto': state.from=state.screen; go('howto'); break;
       case 'relief':
         state.quickIssue=value||''; state.mode='targeted'; render({focusHeading:false});
+        requestAnimationFrame(() => root.querySelector('.relief-panel')?.scrollIntoView({behavior:'smooth',block:'start'}));
+        break;
+      case 'explore-relief':
+        state.quickIssue=value||'';
+        state.mode='assessment';
+        go('home');
         requestAnimationFrame(() => root.querySelector('.relief-panel')?.scrollIntoView({behavior:'smooth',block:'start'}));
         break;
       case 'progress': state.from=state.screen; go('progress'); break;
