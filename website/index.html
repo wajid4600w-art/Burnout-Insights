@@ -593,7 +593,7 @@ td:last-child, th:last-child { text-align:right; }
 
   function header() {
     const surveyHeader=state.screen==='question' ? `<div class="header-progress"><span>Question ${state.index+1} of ${activeItems().length}</span><div><i style="width:${Math.round((state.index+1)/activeItems().length*100)}%"></i></div></div>` : '';
-    return `<header class="site-header no-print" dir="ltr"><div class="container header-inner"><button type="button" class="brand brand-button" data-action="home" aria-label="Go to Burnout Insight home"><span class="brand-mark">✦</span><span>Burnout Insight<small>Work wellbeing tool</small></span></button>${surveyHeader}<nav aria-label="Main navigation">${readRecords().length?link('records','Records','nav-progress'):''}${readProgress()?link('progress', 'My progress', 'nav-progress'):''}${link('howto', 'How it works')}</nav></div></header>`;
+    return `<header class="site-header no-print" dir="ltr"><div class="container header-inner"><button type="button" class="brand brand-button" data-action="home" aria-label="Go to Burnout Insight home"><span class="brand-mark">✦</span><span>Burnout Insight<small>Work wellbeing tool</small></span></button>${surveyHeader}<nav aria-label="Main navigation">${link('records','Records','nav-progress')}${readProgress()?link('progress', 'My progress', 'nav-progress'):''}${link('howto', 'How it works')}</nav></div></header>`;
   }
   function footer() {
     return `<footer class="site-footer no-print"><div class="container"><p>Burnout Insight is a student educational project, not a diagnostic service.</p></div></footer>`;
