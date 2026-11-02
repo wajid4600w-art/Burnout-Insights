@@ -209,6 +209,12 @@
     W06:'Try one protected focus block with notifications muted, where your role and workplace allow it.',
     W07:'Protect one small piece of non-work time today and notice whether it changes your recovery.'
   };
+  const focusedTips = {
+    coworkers:'Focus on the specific behaviour, its effect on your work, and one boundary or agreement that could make the next interaction clearer.',
+    workload:'Separate urgent work from work that can wait, then ask for a clear trade-off instead of silently absorbing another task.',
+    control:'Identify one decision, interruption, or unclear expectation that is draining your control and choose one practical change to request.',
+    exhaustion:'Treat the signal as information: pause, reduce the next task, and consider support if this level of exhaustion keeps returning.'
+  };
   function partialMeter() {
     if (state.mode === 'targeted') {
       const items=activeItems();
@@ -232,7 +238,7 @@
   }
   function questionAdvice(item) {
     const selected=C.validatedAnswer(state.answers,item.id);
-    const tip=questionTips[item.id] || 'Notice what this question brings to mind, then choose one small action that supports your energy or working conditions.';
+    const tip=questionTips[item.id] || focusedTips[state.quickIssue] || 'Notice what this question brings to mind, then choose one small action that supports your energy or working conditions.';
     return `<aside class="question-help"><div class="help-badge">Helpful next step</div><h2>${selected===null?'A small idea for this area':'Based on your answer, try this next'}</h2><p>${tip}</p><div class="help-divider"></div><small>This suggestion is for reflection and practical support. It does not interpret one answer as a diagnosis.</small></aside>`;
   }
 

@@ -97,7 +97,7 @@ p { margin-bottom:17px; max-width:690px; }
 .radio-option:has(input:checked) { background:#edf4fa; }
 .radio-option input { flex:0 0 auto; width:21px; height:21px; accent-color:var(--blue); cursor:pointer; }
 .radio-option span { line-height:1.4; }
-.survey-overview { display:grid; grid-template-columns:1fr 330px; gap:20px; align-items:start; margin-bottom:16px; }.survey-overview .progress { margin-bottom:0; }.live-meters { display:grid; gap:9px; }.live-meter { padding:11px 13px; border:1px solid var(--rule); border-radius:10px; background:var(--surface); box-shadow:0 4px 12px rgba(25,55,90,.05); }.live-meter-head { display:flex; justify-content:space-between; gap:10px; font-size:.72rem; color:var(--secondary); font-weight:700; }.live-meter-head strong { color:var(--blue-dark); font-size:.92rem; }.live-meter-head small { font-size:.62rem; color:var(--secondary); font-weight:400; }.compact-meter { height:8px; margin:9px 0 5px; }.live-meter > small { color:var(--secondary); font-size:.63rem; }.question-content { padding-top:10px; padding-bottom:28px; }.question-layout { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(240px,.65fr); gap:22px; align-items:start; }.question-enter { animation:questionEnter .35s ease both; }.question-field { background:var(--surface); border:1px solid var(--rule); border-radius:17px; padding:18px 24px 16px; box-shadow:0 14px 28px rgba(29,88,125,.08); }.question-field h1 { font-size:clamp(1.55rem,2.8vw,2.1rem); margin-bottom:9px; }.question-eyebrow { display:block; color:#6f94b7; text-transform:uppercase; letter-spacing:.1em; font-weight:800; font-size:.68rem; margin-bottom:10px; }.question-help { position:sticky; top:22px; padding:21px; border:1px solid #cfe0ed; border-radius:15px; background:linear-gradient(145deg,#eff9fc,#fff); animation:helpEnter .45s ease .08s both; }.help-badge { display:inline-block; padding:5px 9px; border-radius:99px; background:#d9ecf7; color:var(--blue-dark); font-size:.68rem; font-weight:800; }.question-help h2 { margin:15px 0 8px; font-size:1.1rem; }.question-help p { color:var(--secondary); font-size:.86rem; }.question-help small { color:var(--secondary); font-size:.7rem; line-height:1.4; display:block; }.help-divider { height:1px; background:#d7e5ef; margin:14px 0; }
+.survey-overview { display:grid; grid-template-columns:1fr 330px; gap:18px; align-items:start; margin-bottom:9px; }.survey-overview .progress { margin-bottom:0; }.live-meters { display:grid; gap:7px; }.live-meter { padding:9px 12px; border:1px solid var(--rule); border-radius:10px; background:var(--surface); box-shadow:0 4px 12px rgba(25,55,90,.05); }.live-meter-head { display:flex; justify-content:space-between; gap:10px; font-size:.72rem; color:var(--secondary); font-weight:700; }.live-meter-head strong { color:var(--blue-dark); font-size:.92rem; }.live-meter-head small { font-size:.62rem; color:var(--secondary); font-weight:400; }.compact-meter { height:8px; margin:7px 0 4px; }.live-meter > small { color:var(--secondary); font-size:.63rem; }.question-content { padding-top:7px; padding-bottom:28px; }.question-layout { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(240px,.65fr); gap:20px; align-items:start; margin-top:-2px; }.question-enter { animation:questionEnter .35s ease both; }.question-field { background:var(--surface); border:1px solid var(--rule); border-radius:17px; padding:16px 22px 14px; box-shadow:0 14px 28px rgba(29,88,125,.08); }.question-field h1 { font-size:clamp(1.55rem,2.8vw,2.1rem); margin-bottom:8px; }.question-eyebrow { display:block; color:#6f94b7; text-transform:uppercase; letter-spacing:.1em; font-weight:800; font-size:.68rem; margin-bottom:8px; }.question-help { position:sticky; top:12px; padding:19px; border:1px solid #cfe0ed; border-radius:15px; background:linear-gradient(145deg,#eff9fc,#fff); animation:helpEnter .45s ease .08s both; }.help-badge { display:inline-block; padding:5px 9px; border-radius:99px; background:#d9ecf7; color:var(--blue-dark); font-size:.68rem; font-weight:800; }.question-help h2 { margin:13px 0 7px; font-size:1.1rem; }.question-help p { color:var(--secondary); font-size:.86rem; }.question-help small { color:var(--secondary); font-size:.7rem; line-height:1.4; display:block; }.help-divider { height:1px; background:#d7e5ef; margin:12px 0; }
 .error { color:var(--error); font-weight:700; border-left:4px solid var(--error); padding:6px 12px; margin:8px 0 16px; }
 [hidden] { display:none !important; }
 .print-title { display:none; }
@@ -200,7 +200,7 @@ td:last-child, th:last-child { text-align:right; }
   .howto-steps { grid-template-columns:1fr 1fr; }
   .header-progress { display:none; }
   .survey-overview { grid-template-columns:1fr; gap:15px; }.live-meters { grid-template-columns:1fr 1fr; }.live-meter { padding:9px; }.live-meter > small { font-size:.58rem; }
-  .question-layout { grid-template-columns:1fr; gap:18px; }.question-field { padding:23px 18px; }.question-help { position:static; order:2; }
+  .question-layout { grid-template-columns:1fr; gap:18px; }.question-field { padding:18px 18px 16px; }.question-help { position:static; order:2; }
   .nav-progress { margin-right:9px; }
   .week-grid { grid-template-columns:repeat(2,1fr); }
   .plan-card { padding:18px; }
@@ -538,6 +538,12 @@ td:last-child, th:last-child { text-align:right; }
     W06:'Try one protected focus block with notifications muted, where your role and workplace allow it.',
     W07:'Protect one small piece of non-work time today and notice whether it changes your recovery.'
   };
+  const focusedTips = {
+    coworkers:'Focus on the specific behaviour, its effect on your work, and one boundary or agreement that could make the next interaction clearer.',
+    workload:'Separate urgent work from work that can wait, then ask for a clear trade-off instead of silently absorbing another task.',
+    control:'Identify one decision, interruption, or unclear expectation that is draining your control and choose one practical change to request.',
+    exhaustion:'Treat the signal as information: pause, reduce the next task, and consider support if this level of exhaustion keeps returning.'
+  };
   function partialMeter() {
     if (state.mode === 'targeted') {
       const items=activeItems();
@@ -561,7 +567,7 @@ td:last-child, th:last-child { text-align:right; }
   }
   function questionAdvice(item) {
     const selected=C.validatedAnswer(state.answers,item.id);
-    const tip=questionTips[item.id] || 'Notice what this question brings to mind, then choose one small action that supports your energy or working conditions.';
+    const tip=questionTips[item.id] || focusedTips[state.quickIssue] || 'Notice what this question brings to mind, then choose one small action that supports your energy or working conditions.';
     return `<aside class="question-help"><div class="help-badge">Helpful next step</div><h2>${selected===null?'A small idea for this area':'Based on your answer, try this next'}</h2><p>${tip}</p><div class="help-divider"></div><small>This suggestion is for reflection and practical support. It does not interpret one answer as a diagnosis.</small></aside>`;
   }
 
