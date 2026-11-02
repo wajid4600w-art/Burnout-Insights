@@ -230,14 +230,13 @@
       return [{label:reliefGuides[state.quickIssue]?.title || 'Focused concern', score:targetedScore(items), count:answered.length}];
     }
     const groups = [
-      {id:'personal', label:'Personal exhaustion', items:C.cbiItems.filter(item=>item.section==='personal')},
-      {id:'work', label:'Work-related exhaustion', items:C.cbiItems.filter(item=>item.section==='work')},
-      {id:'workplace', label:'Workplace pressure', items:C.workplaceItems}
+      {id:'personal', label:'Personal burnout', items:C.cbiItems.filter(item=>item.section==='personal')},
+      {id:'work', label:'Work-related burnout', items:C.cbiItems.filter(item=>item.section==='work').concat(C.workplaceItems)}
     ];
     return groups.map(group => {
       const answered=group.items.filter(item=>C.validatedAnswer(state.answers,item.id)!==null);
       if (!answered.length) return {...group, score:0, count:0};
-      const score=answered.reduce((sum,item)=>sum+(group.id==='workplace'?C.workplaceItemConcern(item,state.answers[item.id]):C.cbiItemScore(item,state.answers[item.id])),0)/answered.length;
+      const score=answered.reduce((sum,item)=>sum+(C.cbiItems.includes(item)?C.cbiItemScore(item,state.answers[item.id]):C.workplaceItemConcern(item,state.answers[item.id])),0)/answered.length;
       return {...group,score,count:answered.length};
     });
   }
@@ -319,7 +318,6 @@
     const dashboardHtml=dashboardValues.map(([label,value])=>`<div class="live-dial-item">${dial(tx(label),value,'')}</div>`).join('');
     const overallScore=dashboardValues.reduce((sum,[,value])=>sum+Number(value||0),0)/dashboardValues.length;
     const overallBand=meterBand(overallScore);
-    const dashboardGraph=dashboardValues.map(([label,value])=>`<div class="graph-line"><span>${escapeHtml(label)}</span><div class="chart-track"><i class="graph-severity ${meterBand(value).className}" style="width:${value}%"></i></div><b>${Number(value).toFixed(1)}</b></div>`).join('');
     return `<main id="main" class="container content" tabindex="-1" dir="${dir()}">
       <section class="home-hero-layout">
       <section class="hero-panel">
@@ -328,7 +326,7 @@
       </section>
       <aside class="choice-rail"><div class="section-kicker">${tx('What do you need today?')}</div><h2>Choose your starting point</h2><div class="choice-grid"><button class="choice-card" data-action="start"><strong>◈</strong><span>${tx('Find my pattern')}</span><small>Answer the questions and understand your exhaustion pattern.</small></button><button class="choice-card" data-action="relief" data-issue="exhaustion"><strong>✦</strong><span>${tx('Get immediate help')}</span><small>Start with a short practical step for today.</small></button><button class="choice-card" data-action="howto"><strong>ⓘ</strong><span>${tx('How it works')}</span><small>Learn about the steps, results, and privacy.</small></button></div></aside>
       </section>
-      <section class="live-dashboard home-dashboard-top"><div class="dashboard-heading"><div><div class="section-kicker">${tx('Your wellbeing dashboard')}</div><h2>${tx('Overall work wellbeing summary')}</h2></div><span class="dashboard-tag">${dashboardTag}</span></div><div class="live-dial-grid">${dashboardHtml}</div><div class="dashboard-graph" role="img" aria-label="Overall graphical summary of personal exhaustion, work-related exhaustion, and workplace pressure"><div class="graph-y"><span>Higher pressure</span><span>Lower pressure</span></div><div class="graph-lines">${dashboardGraph}</div></div><p class="dashboard-summary"><strong>${overallBand.label}.</strong> ${overallBand.guidance}</p><p class="dashboard-note">${savedRecords.length?tx('This dashboard combines saved reports and current answers.'):tx('Each meter updates as answers become available.')}</p></section>
+      <section class="live-dashboard home-dashboard-top"><div class="dashboard-heading"><div><div class="section-kicker">${tx('Your wellbeing dashboard')}</div><h2>${tx('Overall work wellbeing summary')}</h2></div><span class="dashboard-tag">${dashboardTag}</span></div><div class="live-dial-grid">${dashboardHtml}</div><p class="dashboard-summary"><strong>${overallBand.label}.</strong> ${overallBand.guidance}</p><p class="dashboard-note">${savedRecords.length?tx('This dashboard combines saved reports and current answers.'):tx('Each meter updates as answers become available.')}</p></section>
       ${quickRelief()}
       <p class="help-note">Educational tool only: it cannot diagnose burnout, depression, or another health condition.</p>
     </main>`;
@@ -574,6 +572,7 @@
       const item=activeItems()[state.index];state.answers[item.id]=Number(ev.target.value);
       const err=document.getElementById('answer-error');if(err)err.hidden=true;
       render({focusHeading:false});
+      requestAnimationFrame(() => root.querySelector('input[name="answer"]:checked')?.focus());
     }
     if (ev.target.matches('[data-plan-item]')) {
       const plan=readProgress(); if (!plan) return;
@@ -586,6 +585,11 @@
       const ids=[...document.querySelectorAll('[data-record-id]:checked')].map(input=>input.getAttribute('data-record-id'));
       state.selectedRecords=ids; render({focusHeading:false});
     }
+  });
+  document.addEventListener('keydown', ev => {
+    if (ev.key !== 'Enter' || ev.target.name !== 'answer' || state.screen !== 'question') return;
+    ev.preventDefault();
+    document.getElementById('question-form')?.requestSubmit();
   });
   document.addEventListener('click', ev => {
     const progressDate=ev.target.closest('[data-progress-date]');
