@@ -15,7 +15,7 @@
   {id:'P01',section:'personal',text:'How often do you feel tired?',scale:'freq'},
   {id:'P02',section:'personal',text:'How often are you physically exhausted?',scale:'freq'},
   {id:'P03',section:'personal',text:'How often are you emotionally exhausted?',scale:'freq'},
-  {id:'P04',section:'personal',text:'How often do you think: “I can’t take it anymore”?',scale:'freq'},
+  {id:'P04',section:'personal',text:'How often do you think: "I can’t take it anymore"?',scale:'freq'},
   {id:'P05',section:'personal',text:'How often do you feel worn out?',scale:'freq'},
   {id:'P06',section:'personal',text:'How often do you feel weak and susceptible to illness?',scale:'freq'},
   {id:'W01',section:'work',text:'Is your work emotionally exhausting?',scale:'degree'},
