@@ -1,0 +1,106 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+3 0 obj
+<< /Length 3252 >>
+stream
+BT /B 16 Tf 54 790 Td (Burnout Insight - Repository Guide) Tj ET
+BT /R 10 Tf 54 765 Td (A simple guide to the purpose, features, structure, scoring, privacy, and development) Tj ET
+BT /R 10 Tf 54 750 Td (workflow of the Burnout Insight website.) Tj ET
+BT /B 16 Tf 54 729 Td (1. Project purpose) Tj ET
+BT /R 10 Tf 54 704 Td (Burnout Insight is a standalone English website for educational reflection on exhaustion and) Tj ET
+BT /R 10 Tf 54 689 Td (workplace pressure. It runs in a browser and does not require an account, server, or) Tj ET
+BT /R 10 Tf 54 674 Td (database.) Tj ET
+BT /R 10 Tf 54 653 Td (The project helps a person understand patterns in personal and work-related exhaustion and) Tj ET
+BT /R 10 Tf 54 638 Td (provides practical, non-clinical suggestions for workplace concerns and recovery.) Tj ET
+BT /R 10 Tf 54 617 Td (The site is not a medical diagnostic tool.) Tj ET
+BT /B 16 Tf 54 596 Td (2. What the tool can do) Tj ET
+BT /R 10 Tf 54 571 Td (- Ask 25 mixed questions: 13 CBI exhaustion questions and 12 workplace questions.) Tj ET
+BT /R 10 Tf 54 550 Td (- Update Personal burnout and Work-related burnout meters during the assessment.) Tj ET
+BT /R 10 Tf 54 529 Td (- Use Enter to submit a selected answer and move to the next question.) Tj ET
+BT /R 10 Tf 54 508 Td (- Show lower, elevated, and higher ranges with matching colors.) Tj ET
+BT /R 10 Tf 54 487 Td (- Provide Immediate support check-ins for workload, control, coworker tension, or) Tj ET
+BT /R 10 Tf 54 472 Td (exhaustion.) Tj ET
+BT /R 10 Tf 54 451 Td (- Save complete reports and all question/answer details in browser records.) Tj ET
+BT /R 10 Tf 54 430 Td (Review, delete, restore, and export saved reports.) Tj ET
+BT /R 10 Tf 54 409 Td (- Create a formatted report that can be saved as a real PDF from the browser print dialog.) Tj ET
+BT /R 10 Tf 54 388 Td (- Provide a private seven-day progress plan.) Tj ET
+BT /B 16 Tf 54 367 Td (3. Main user flow) Tj ET
+BT /R 10 Tf 54 342 Td (- Choose Find my pattern for the full assessment, or Get immediate help for a focused) Tj ET
+BT /R 10 Tf 54 327 Td (check-in.) Tj ET
+BT /R 10 Tf 54 306 Td (- Answer each question. Select an option and press Enter, or click Continue.) Tj ET
+BT /R 10 Tf 54 285 Td (- Review the colored meters, explanations, and suggested next steps.) Tj ET
+BT /R 10 Tf 54 264 Td (- Open Records to review saved reports and select Create PDF report.) Tj ET
+BT /R 10 Tf 54 243 Td (- Choose Save as PDF in the browser print dialog.) Tj ET
+BT /B 16 Tf 54 222 Td (4. Repository structure) Tj ET
+BT /R 10 Tf 54 197 Td (- website/index.html - generated standalone browser file.) Tj ET
+BT /R 10 Tf 54 176 Td (- website/app.js - pages, survey flow, meters, records, reports, exports, and interactions.) Tj ET
+BT /R 10 Tf 54 155 Td (- website/core.js - questions, answer scales, scoring rules, and sources.) Tj ET
+BT /R 10 Tf 54 134 Td (- website/style.css - layout, colors, responsive design, and print styling.) Tj ET
+BT /R 10 Tf 54 113 Td (- website/build.py - combines the source files into index.html.) Tj ET
+BT /R 10 Tf 54 92 Td (docs/Burnout_Insight_Repository_Guide.md - source version of this guide.) Tj ET
+BT /R 10 Tf 54 71 Td (docs/Burnout_Insight_Repository_Guide.pdf - PDF version of this guide.) Tj ET
+endstream
+endobj
+4 0 obj
+<< /Length 2165 >>
+stream
+BT /B 16 Tf 54 784 Td (5. Scoring design) Tj ET
+BT /R 10 Tf 54 759 Td (- CBI answer choices become 100, 75, 50, 25, or 0.) Tj ET
+BT /R 10 Tf 54 738 Td (- The personal score averages P01-P06.) Tj ET
+BT /R 10 Tf 54 717 Td (- The work-related CBI score averages W01-W07. W07 is reverse-scored because it asks about) Tj ET
+BT /R 10 Tf 54 702 Td (energy during leisure time.) Tj ET
+BT /R 10 Tf 54 681 Td (- The 12 workplace questions cover Workload, Control, Reward, Community, Fairness, and) Tj ET
+BT /R 10 Tf 54 666 Td (Values.) Tj ET
+BT /R 10 Tf 54 645 Td (- Severity bands are Lower below 34, Elevated from 34 through 66, and Higher at 67 or above.) Tj ET
+BT /R 10 Tf 54 630 Td (These are presentation bands, not clinical cutoffs.) Tj ET
+BT /B 16 Tf 54 609 Td (6. Records, privacy, and reports) Tj ET
+BT /R 10 Tf 54 584 Td (- Records stay in browser local storage. No account or server upload is required.) Tj ET
+BT /R 10 Tf 54 563 Td (- Saved reports include scores, workplace analysis, recommendations, report date/time, and) Tj ET
+BT /R 10 Tf 54 548 Td (response details.) Tj ET
+BT /R 10 Tf 54 527 Td (- PDF export uses the browser print dialog because a standalone page cannot silently create) Tj ET
+BT /R 10 Tf 54 512 Td (a valid PDF without a PDF library or server.) Tj ET
+BT /R 10 Tf 54 491 Td (- Browser storage can be cleared, and reports may contain sensitive personal reflections.) Tj ET
+BT /B 16 Tf 54 470 Td (7. Development workflow) Tj ET
+BT /R 10 Tf 54 445 Td (- After editing app.js, core.js, or style.css, run: python website/build.py) Tj ET
+BT /R 10 Tf 54 424 Td (- Run scoring tests: node Burnout_Insight_ALL_IN_ONE/tests/scoring.test.cjs) Tj ET
+BT /R 10 Tf 54 403 Td (- Check JavaScript syntax: node --check website/app.js) Tj ET
+BT /R 10 Tf 54 382 Td (- Synchronize the generated index.html before publishing.) Tj ET
+BT /B 16 Tf 54 361 Td (8. Important limitation) Tj ET
+BT /R 10 Tf 54 336 Td (- Burnout Insight is an educational reflection tool. It cannot determine whether a person) Tj ET
+BT /R 10 Tf 54 321 Td (has burnout or another health condition and should not replace qualified professional) Tj ET
+BT /R 10 Tf 54 306 Td (support.) Tj ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 7 0 R /MediaBox [0 0 595 842] /Resources << /Font << /R 1 0 R /B 2 0 R >> >> /Contents 3 0 R >>
+endobj
+6 0 obj
+<< /Type /Page /Parent 7 0 R /MediaBox [0 0 595 842] /Resources << /Font << /R 1 0 R /B 2 0 R >> >> /Contents 4 0 R >>
+endobj
+7 0 obj
+<< /Type /Pages /Kids [5 0 R 6 0 R] /Count 2 >>
+endobj
+8 0 obj
+<< /Type /Catalog /Pages 7 0 R >>
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000009 00000 n 
+0000000079 00000 n 
+0000000154 00000 n 
+0000003458 00000 n 
+0000005675 00000 n 
+0000005809 00000 n 
+0000005943 00000 n 
+0000006006 00000 n 
+trailer
+<< /Size 9 /Root 8 0 R >>
+startxref
+6055
+%%EOF
